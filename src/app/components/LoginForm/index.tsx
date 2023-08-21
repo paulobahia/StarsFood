@@ -1,11 +1,23 @@
 "use client"
 
-import { authUser } from '@/services'
+import { Login } from '@/services'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { authUserFormSchema } from '@/utils/zod/authUserFormSchema'
 import { Eye, EyeSlash } from 'iconsax-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { z } from 'zod'
 
 const LoginForm = () => {
+    type AuthUserFormData = z.infer<typeof authUserFormSchema>
     const [typePassword, setTypePassword] = useState<string>("password")
+    const [loading, setLoading] = useState<boolean>(false)
+    const router = useRouter()
+
+    const { register, handleSubmit, formState: { errors } } = useForm<AuthUserFormData>({
+        resolver: zodResolver(authUserFormSchema)
+    })
 
     const changeTypePassword = () => {
         setTypePassword((prev) => {
@@ -16,36 +28,43 @@ const LoginForm = () => {
         })
     }
 
-    const login = () => {
+    const authUser: SubmitHandler<AuthUserFormData> = ({ email, password }) => {
+        setLoading(true)
         let postData = {
-            email: 'paulo@example.com',
-            password: '02@ADR16na'
+            email,
+            password
         }
-        authUser(postData)
-            .then((response) => {
-                console.log(response)
+        Login(postData)
+            .then(() => {
+                router.push('/home')
             })
             .catch((e) => {
+                setLoading(false)
                 console.log(e)
             })
     }
 
     return (
-        <div className="w-full flex-col flex justify-center items-center max-w-sm">
+        <form onSubmit={handleSubmit(authUser)} className="w-full flex-col flex justify-center items-center max-w-sm">
             <span className="text-center">
                 <p className="font-semibold text-2xl">Faça o login aqui</p>
                 <p className="font-light text-sm text-primary-secundary">Digite seu e-mail e senha para acessar sua conta</p>
             </span>
             <div className="w-full gap-y-2 flex mt-6 flex-col justify-center items-center">
-                <input placeholder="Nome@exemplo.com" type="email" className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-md" />
+                <input {...register('email')} name='email' placeholder="Nome@exemplo.com" type="email" className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-md" />
+                {errors.email && <span className='text-danger-base w-full text-xs font-semibold'>{errors.email.message}</span>}
                 <div className="relative w-full">
-                    <input placeholder="Senha" type={typePassword} className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-md" />
+                    <input {...register('password')} name='password' placeholder="Senha" type={typePassword} className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-md" />
                     <span onClick={changeTypePassword} className="absolute inset-y-0 right-3 flex items-center pl-2">
                         {typePassword == 'password' ? <Eye className="w-5 h-5 text-itens-primary cursor-pointer" variant="Bulk" /> : <EyeSlash className="w-5 h-5 text-itens-primary cursor-pointer" variant="Bulk" />}
                     </span>
                 </div>
+                {errors.password && <span className='text-danger-base w-full text-xs font-semibold'>{errors.password.message}</span>}
+                <div className='w-full flex justify-start'>
+                    <p className='text-white font-semibold text-xs cursor-pointer text-end'>Esqueci minha senha</p>
+                </div>
                 <div className='relative w-full'>
-                    <button onClick={login} className="bg-white transition-colors ease-in-out w-full p-2 mt-1 border text-black font-medium text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white">
+                    <button type='submit' className="bg-white transition-colors ease-in-out w-full p-2 mt-1 border text-black font-medium text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white">
                         Entrar com E-mail
                     </button>
                 </div>
@@ -60,7 +79,7 @@ const LoginForm = () => {
             <button className="bg-transparent w-full p-2 mt-4 border font-medium border-primary-secundary text-white text-sm rounded-md hover:bg-white/10">
                 Google
             </button>
-        </div>
+        </form>
     )
 }
 

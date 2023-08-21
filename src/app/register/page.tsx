@@ -1,11 +1,12 @@
 import Image from "next/image";
 import logo from '../assets/StarsLogo.png'
 import RegisterForm from "../components/RegisterForm";
+import Link from "next/link";
 
 export default function Register() {
     return (
-        <main className="min-h-screen grid grid-cols-2 items-center justify-between">
-            <div className="text-white bg-background-secondary min-h-screen p-10 flex flex-col justify-between">
+        <main className="min-h-screen grid grid-cols-1 md:grid-cols-2 items-center justify-between">
+            <div className="text-white bg-background-secondary min-h-screen p-10 md:flex hidden flex-col justify-between">
                 <span className="flex items-center">
                     <Image src={logo} alt="Logo" />
                     <p className="font-bold text-xl ml-2">Stars Inc</p>
@@ -18,8 +19,10 @@ export default function Register() {
                 </span>
             </div>
             <div className="text-white relative min-h-full flex items-center justify-center p-10">
-                <div className="absolute font-bold text-lg top-0 w-full cursor-pointer flex justify-end p-10">
-                    Login
+                <div className="absolute font-bold text-lg top-0 w-full flex justify-end p-10">
+                    <Link className="cursor-pointer" href={"/"}>
+                        Login
+                    </Link>
                 </div>
                 <RegisterForm />
             </div>

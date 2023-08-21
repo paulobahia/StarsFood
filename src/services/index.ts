@@ -1,5 +1,5 @@
-import server from "@/api/axios";
+import server from "@/config/axios"
 
-export const authUser = (payload: any) => {
+export const Login = (payload: any) => {
     return server.post('auth/login', payload)
 }
