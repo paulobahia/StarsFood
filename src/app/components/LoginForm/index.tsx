@@ -40,7 +40,7 @@ const LoginForm = () => {
                 router.push('/home')
             })
             .catch((e) => {
-                Notify({ title: 'Erro inesperado', message: 'Usuário não encontrado.', type: 'Error' })
+                Notify({ title: 'Erro inesperado', message: 'Desculpe, ocorreu um erro no servidor.', type: 'Error' })
                 setLoading(false)
             })
     }
