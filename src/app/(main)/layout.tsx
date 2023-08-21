@@ -30,7 +30,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                             </Link>
                         </p>
                         <p>
-                            <Link className="cursor-pointer" href={"/settings"}>
+                            <Link className="cursor-pointer" href={"/"}>
                                 Configurações
                             </Link>
                         </p>
