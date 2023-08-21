@@ -15,7 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>{children}
+        <div id="Notify" className="fixed top-4 right-4" />
+      </body>
     </html>
   )
 }

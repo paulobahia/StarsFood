@@ -8,6 +8,7 @@ import { Eye, EyeSlash } from 'iconsax-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { z } from 'zod'
+import Notify from '@/utils/Notify/notifyUtils'
 
 const LoginForm = () => {
     type AuthUserFormData = z.infer<typeof authUserFormSchema>
@@ -39,8 +40,8 @@ const LoginForm = () => {
                 router.push('/home')
             })
             .catch((e) => {
+                Notify({ title: 'Erro inesperado', message: 'Usuário não encontrado.', type: 'Error' })
                 setLoading(false)
-                console.log(e)
             })
     }
 

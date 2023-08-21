@@ -12,7 +12,10 @@ const config: Config = {
         background: {
           primary: '#09090B',
           secondary: '#18181B',
-          card: '#242C32'
+        },
+        toast: {
+          background: '#242C32',
+          circle: '#303746'
         },
         success: {
           light: '#04D361',
