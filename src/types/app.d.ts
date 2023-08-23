@@ -1,5 +1,5 @@
-interface NotifyProps {
-    title: string,
-    message: string,
-    type: string
+interface NotifyContextProps {
+    showNotify: (title: string,
+        message: string,
+        type: string) => void
 }

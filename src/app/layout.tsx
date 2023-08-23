@@ -1,3 +1,4 @@
+import { ToastProvider } from '@/context/NotifyContext'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -15,8 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}>{children}
-        <div id="Notify" className="fixed top-4 right-4" />
+      <body className={inter.className}>
+        <ToastProvider>
+          {children}
+        </ToastProvider>
       </body>
     </html>
   )

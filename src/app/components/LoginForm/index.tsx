@@ -8,12 +8,13 @@ import { Eye, EyeSlash } from 'iconsax-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { z } from 'zod'
-import Notify from '@/utils/Notify/notifyUtils'
+import { Notify } from '@/context/NotifyContext'
 
 const LoginForm = () => {
     type AuthUserFormData = z.infer<typeof authUserFormSchema>
     const [typePassword, setTypePassword] = useState<string>("password")
     const [loading, setLoading] = useState<boolean>(false)
+    const _Notify = Notify();
     const router = useRouter()
 
     const { register, handleSubmit, formState: { errors } } = useForm<AuthUserFormData>({
@@ -40,7 +41,7 @@ const LoginForm = () => {
                 router.push('/home')
             })
             .catch((e) => {
-                Notify({ title: 'Erro inesperado', message: 'Desculpe, ocorreu um erro no servidor.', type: 'Error' })
+                _Notify.showNotify('Erro inesperado', 'Desculpe, ocorreu um erro no servidor.', 'Error')
                 setLoading(false)
             })
     }
