@@ -16,42 +16,29 @@ const iconPaths = {
 };
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
-    const [position, setPosition] = useState<string>('-translate-y-20');
     const [notifyContent, setNotifyContent] = useState<{
         title: string;
         message: string;
         type: string;
     } | null>(null);
 
-    const Icon = iconPaths[notifyContent?.type as keyof typeof iconPaths];
+    const showNotify = (title: string, message: string, type: string) => {
 
-    const showNotify = async (title: string, message: string, type: string) => {
         setNotifyContent({ title, message, type });
-
-        setTimeout(() => {
-            setPosition('translate-y-0 transition-transform ease-linear duration-500');
-        }, 500);
-
-        setTimeout(() => {
-            closeToast()
-        }, 6000);
 
         setTimeout(() => {
             setNotifyContent(null);
         }, 7000);
     };
 
-    const closeToast = () => {
-        setPosition('translate-x-96 transition-transform ease-linear duration-500')
-    }
+    const Icon = iconPaths[notifyContent?.type as keyof typeof iconPaths];
 
     return (
         <NotifyContext.Provider value={{ showNotify }}>
             {children}
-            {notifyContent && <Toast.Root position={position}>
+            {notifyContent && <Toast.Root>
                 <Toast.Icon icon={Icon} />
                 <Toast.Content message={notifyContent.message} title={notifyContent.title} />
-                <X onClick={closeToast} className='w-4 h-4 absolute top-2 right-2 cursor-pointer text-zinc-50 opacity-0 group-hover:opacity-100 transition-opacity ease-in delay-100' />
             </Toast.Root>}
         </NotifyContext.Provider>
     );
