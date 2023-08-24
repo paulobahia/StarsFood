@@ -3,12 +3,14 @@
 import { Login } from '@/services'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { authUserFormSchema } from '@/utils/zod/authUserFormSchema'
 import { Eye, EyeSlash } from 'iconsax-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { z } from 'zod'
+import Link from 'next/link'
+
 import { Notify } from '@/context/NotifyContext'
+import { authUserFormSchema } from '@/schemas/auth/loginFormSchema'
 
 const LoginForm = () => {
     type AuthUserFormData = z.infer<typeof authUserFormSchema>
@@ -38,10 +40,19 @@ const LoginForm = () => {
         }
         Login(postData)
             .then(() => {
-                router.push('/home')
+                router.push('/overview')
             })
             .catch((e) => {
-                _Notify.showNotify('Erro inesperado', 'Desculpe, ocorreu um erro no servidor.', 'Error')
+                var errorMessage: string = ''
+
+                if (e.code = 'ERR_NETWORK') {
+                    errorMessage = 'Desculpe, ocorreu um erro no servidor.'
+                }
+                if (e.response) {
+                    errorMessage = e.response.data.message
+                }
+
+                _Notify.showNotify('Erro inesperado', errorMessage, 'Error')
                 setLoading(false)
             })
     }
@@ -63,7 +74,11 @@ const LoginForm = () => {
                 </div>
                 {errors.password && <span className='text-danger-base w-full text-xs font-semibold'>{errors.password.message}</span>}
                 <div className='w-full flex justify-start'>
-                    <p className='text-white font-semibold text-xs cursor-pointer text-end'>Esqueci minha senha</p>
+                    <p className='text-white font-semibold text-xs cursor-pointer text-end'>
+                        <Link className="cursor-pointer" href={"/reset-password"}>
+                            Esqueci minha senha
+                        </Link>
+                    </p>
                 </div>
                 <div className='relative w-full'>
                     <button disabled={loading} type='submit' className="bg-white transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full p-2 mt-1 border text-black font-medium text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
