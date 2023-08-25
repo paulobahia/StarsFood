@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { checkEmailFormSchema } from '@/schemas/auth/registerFormSchema'
 import { useState } from 'react'
 import { checkEmail } from '@/services'
+import { Notify } from '@/context/NotifyContext'
 
 
 interface Step1Props {
@@ -13,18 +14,32 @@ interface Step1Props {
 const Step1: React.FC<Step1Props> = ({ onNextStep }) => {
     type CheckEmailFormData = z.infer<typeof checkEmailFormSchema>
     const [loading, setLoading] = useState<boolean>(false)
+    const _Notify = Notify();
 
     const { register, handleSubmit, formState: { errors } } = useForm<CheckEmailFormData>({
         resolver: zodResolver(checkEmailFormSchema)
     })
 
     const handleNext: SubmitHandler<CheckEmailFormData> = ({ email }) => {
-        checkEmail(email)
-            .then((response) => {
-                console.log(response)
+        let postData = {
+            email: email
+        }
+        checkEmail(postData)
+            .then(() => {
+                onNextStep()
             })
             .catch((e) => {
-                console.log(e)
+                var errorMessage: string = ''
+
+                if (e.code = 'ERR_NETWORK') {
+                    errorMessage = 'Desculpe, ocorreu um erro no servidor.'
+                }
+                if (e.response) {
+                    errorMessage = e.response.data.message
+                }
+
+                _Notify.showNotify('Erro inesperado', errorMessage, 'Error')
+                setLoading(false)
             })
     }
 

@@ -5,5 +5,5 @@ export const Login = (payload: any) => {
 }
 
 export const checkEmail = (payload: any) => {
-    return server.get('users/check-email', payload).then((e) => e.data)
+    return server.post('users/check-email', payload).then((e) => e.data)
 }

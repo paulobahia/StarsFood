@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Register() {
     return (
         <main className="min-h-screen grid grid-cols-1 md:grid-cols-2 items-center justify-between">
-            <div className="text-white bg-background-secondary min-h-screen p-10 md:flex hidden flex-col justify-between">
+            <div className="text-white bg-backgrounds-secondary min-h-screen p-10 md:flex hidden flex-col justify-between">
                 <span className="flex items-center">
                     <Image src={logo} alt="Logo" />
                     <p className="font-bold text-xl ml-2">Stars Inc</p>
