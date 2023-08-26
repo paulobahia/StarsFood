@@ -1,7 +1,7 @@
 import Image from "next/image";
 import logo from '../assets/StarsLogo.png'
-import RegisterForm from "../components/RegisterForm";
 import Link from "next/link";
+import RegisterForm from "./components";
 
 export default function Register() {
     return (
