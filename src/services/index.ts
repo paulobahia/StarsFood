@@ -1,17 +1,21 @@
 import server from "@/config/axios"
+import { Auth, AuthSchema, CheckEmail, CheckEmailSchema, CreateUser, CreateUserSchema } from "@/contracts";
 
 // Auth
 
-export const Login = (payload: any) => {
-    return server.post('auth/login', payload).then((e) => e.data)
+export const Login = async (payload: Auth) => {
+    const validateData = AuthSchema.parse(payload)
+    return server.post('auth/login', validateData)
 }
 
 // User 
 
-export const creatUser = (payload: any) => {
-    return server.post('users', payload).then((e) => e.data)
+export const creatUser = async (payload: CreateUser) => {
+    const validateData = CreateUserSchema.parse(payload);
+    return server.post('users', validateData)
 }
 
-export const checkEmail = (payload: any) => {
-    return server.post('users/check-email', payload).then((e) => e.data)
+export const checkEmail = async (payload: CheckEmail) => {
+    const validateData = CheckEmailSchema.parse(payload)
+    return server.post('users/check-email', validateData)
 }
