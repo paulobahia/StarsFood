@@ -17,11 +17,12 @@ import { UseFormRegister } from "react-hook-form"
 
 interface DatePickerProps {
     register: UseFormRegister<{
-        name: string;
         email: string;
+        name: string;
         password: string;
         birthDate: Date;
-        restaurantCode: string;
+        restaurantId: string;
+        gender: string;
     }>
 }
 

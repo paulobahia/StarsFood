@@ -2,16 +2,16 @@ import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { checkEmailFormSchema } from '@/schemas/auth/registerFormSchema'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { checkEmail } from '@/services'
 import { Notify } from '@/context/NotifyContext'
 
-
 interface Step1Props {
-    onNextStep: () => void
+    onNextStep: () => void,
+    setEmail: Dispatch<SetStateAction<string>>
 }
 
-const Step1: React.FC<Step1Props> = ({ onNextStep }) => {
+const Step1: React.FC<Step1Props> = ({ onNextStep, setEmail }) => {
     type CheckEmailFormData = z.infer<typeof checkEmailFormSchema>
     const [loading, setLoading] = useState<boolean>(false)
     const _Notify = Notify();
@@ -27,6 +27,7 @@ const Step1: React.FC<Step1Props> = ({ onNextStep }) => {
         checkEmail(postData)
             .then(() => {
                 onNextStep()
+                setEmail(email)
             })
             .catch((e) => {
                 var errorMessage: string = ''
