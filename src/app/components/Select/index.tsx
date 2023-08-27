@@ -1,26 +1,13 @@
-import { FormField } from "@/components/ui/form";
+import { FormField } from "@/app/components/ui/form";
 import {
     Select as SelectRoot,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import { Dispatch, SetStateAction } from "react"
-import { UseFormRegister } from "react-hook-form";
+} from "@/app/components/ui/select"
 
-interface SelectProps {
-    register: UseFormRegister<{
-        email: string;
-        name: string;
-        password: string;
-        birthDate: Date;
-        restaurantId: string;
-        gender: string;
-    }>
-}
-
-export function Select({ register }: SelectProps) {
+export function Select({ register }: RegisterProps) {
     return (
         <FormField
             {...register('gender')}

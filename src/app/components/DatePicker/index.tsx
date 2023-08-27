@@ -1,32 +1,14 @@
 "use client"
 
-import { Dispatch, SetStateAction, useState } from "react"
 import { ptBR } from 'date-fns/locale'
-
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
+import { Button } from "@/app/components/ui/button"
+import { Calendar } from "@/app/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger, } from "@/app/components/ui/popover"
 import { Calendar as CalendarIcon } from "iconsax-react"
-import { FormField } from "@/components/ui/form"
-import { UseFormRegister } from "react-hook-form"
+import { FormField } from "@/app/components/ui/form"
 
-interface DatePickerProps {
-    register: UseFormRegister<{
-        email: string;
-        name: string;
-        password: string;
-        birthDate: Date;
-        restaurantId: string;
-        gender: string;
-    }>
-}
-
-export function DatePicker({ register }: DatePickerProps) {
+export function DatePicker({ register }: RegisterProps) {
 
     const formatDate = (date: Date): string => {
         const dia: string = String(date.getDate()).padStart(2, '0');
