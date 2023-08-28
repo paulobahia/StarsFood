@@ -1,3 +1,5 @@
+import DailyTraffic from "./components/DailyTraffic";
+
 export default function Overview() {
     return (
         <main className="text-white">
@@ -49,6 +51,7 @@ export default function Overview() {
                                 Overview
                             </span>
                         </div>
+                        <DailyTraffic />
                     </div>
                     <div className="border border-primary-light rounded-xl p-6 col-span-1">
                         <div className="flex-col gap-y-6 flex">

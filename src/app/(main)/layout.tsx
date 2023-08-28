@@ -37,7 +37,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                     </div>
                 </div>
             </nav>
-            <div className="p-10">
+            <div className="md:p-10 p-5">
                 {children}
             </div>
         </main>
