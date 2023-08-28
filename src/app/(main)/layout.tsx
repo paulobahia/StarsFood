@@ -8,7 +8,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <nav className="border-b p-2 px-10 text-white flex items-center border-primary-light">
                 <div className="flex items-center justify-between gap-x-16">
                     <Image src={logo} alt="Logo" className="w-8" />
-                    <div className="flex gap-x-6 font-medium text-sm">
+                    <div className="gap-x-6 hidden sm:flex font-medium w-full text-sm">
                         <p>
                             <Link className="cursor-pointer" href={"/overview"}>
                                 Overview
