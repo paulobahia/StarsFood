@@ -9,6 +9,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 
 import { Notify } from "@/context/NotifyContext"
 import { resetPasswordFormSchema } from "@/schemas/user/passwordResetFormSchema"
+import { resetPassword } from "@/services"
 
 const ResetPasswordForm = () => {
     type ResetPasswordFormData = z.infer<typeof resetPasswordFormSchema>
@@ -20,12 +21,36 @@ const ResetPasswordForm = () => {
         resolver: zodResolver(resetPasswordFormSchema)
     })
 
-    const resetPassword: SubmitHandler<ResetPasswordFormData> = ({ email }) => {
-        // Implementação ResetPassword
+    const changePassword: SubmitHandler<ResetPasswordFormData> = ({ email }) => {
+        setLoading(true)
+        let postData = {
+            email
+        }
+        resetPassword(postData)
+            .then((response) => {
+                router.push('/')
+                setLoading(false)
+                _Notify.showNotify('Cadastro Concluído!', 'Aguarde a aprovação para prosseguir.', 'Success')
+            })
+            .catch((e) => {
+                setLoading(false)
+
+                var errorMessage: string = ''
+
+                if (e.code = 'ERR_NETWORK') {
+                    errorMessage = 'Desculpe, ocorreu um erro no servidor.'
+                }
+                if (e.response) {
+                    errorMessage = e.response.data.message
+                }
+
+                _Notify.showNotify('Erro inesperado', errorMessage, 'Error')
+                setLoading(false)
+            })
     }
 
     return (
-        <form onSubmit={handleSubmit(resetPassword)} className="w-full flex-col text-white flex justify-center items-center max-w-sm">
+        <form onSubmit={handleSubmit(changePassword)} className="w-full flex-col text-white flex justify-center items-center max-w-sm">
             <span className="text-center">
                 <p className="font-semibold text-2xl">Recuperar senha</p>
             </span>

@@ -1,5 +1,5 @@
 import server from "@/config/axios"
-import { Auth, AuthSchema, CheckEmail, CheckEmailSchema, CreateUser, CreateUserSchema } from "@/contracts";
+import { Auth, AuthSchema, CheckEmail, CheckEmailSchema, CreateUser, CreateUserSchema, ResetPassword, ResetPasswordSchema } from "@/contracts";
 
 // Auth
 
@@ -18,4 +18,9 @@ export const creatUser = async (payload: CreateUser) => {
 export const checkEmail = async (payload: CheckEmail) => {
     const validateData = CheckEmailSchema.parse(payload)
     return server.post('users/check-email', validateData)
+}
+
+export const resetPassword = async (payload: ResetPassword) => {
+    const validatedata = ResetPasswordSchema.parse(payload)
+    return server.post('users/reset-password', validatedata)
 }
