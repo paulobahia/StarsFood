@@ -67,7 +67,7 @@ const LastSales = () => {
                 <span className="flex-col gap-y-8 flex">
                     {salesData.map(({ imagePath, name, order, value }: salesDataProps, index: number) => {
                         return (
-                            <div className="flex justify-between items-center w-full">
+                            <div className="flex justify-between items-center w-full" key={index}>
                                 <div className="flex gap-x-3 items-center">
                                     <img className="h-9 w-9 rounded-full" src={imagePath} alt="" />
                                     <div className="flex-col flex">
