@@ -5,7 +5,6 @@ import { Notify as Toast } from '@/app/components/Notify';
 import ErrorIcon from '@/app/assets/ErrorIcon.png'
 import SuccessIcon from '@/app/assets/SuccessIcon.png'
 import WarningIcon from '@/app/assets/WarningIcon.png'
-import { X } from "lucide-react";
 
 const NotifyContext = createContext<NotifyContextProps | undefined>(undefined);
 

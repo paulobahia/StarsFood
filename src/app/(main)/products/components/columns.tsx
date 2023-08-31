@@ -31,44 +31,50 @@ export const columns: ColumnDef<Products>[] = [
   {
     accessorKey: "name",
     header: "Produto",
+    cell: ({ row }) => <div className="w-[270px]">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "createdAt",
-    header: "Criação",
+    header: "Data de Criação",
+    cell: ({ row }) => <div className="w-[150px]">{row.getValue("createdAt")}</div>,
   },
   {
     accessorKey: "category",
-    header: "Categoria",
+    header: ({ column }) => (<div className="flex justify-start">Categoria</div>),
+    cell: ({ row }) => <div className="w-[150px] flex justify-start">{row.getValue("category")}</div>,
   },
   {
     accessorKey: "updatedAt",
-    header: "Modificação",
+    header: "Data de Modificação",
+    cell: ({ row }) => <div className="w-[180px]">{row.getValue("updatedAt")}</div>,
   },
   {
     accessorKey: "price",
-    header: "Preço",
+    header: ({ column }) => (<div className="w-[100px] flex justify-center">Preço</div>),
+    cell: ({ row }) => <div className="w-[100px] flex justify-center">{row.getValue("price")}</div>,
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir Menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            <DropdownMenuItem>Editar</DropdownMenuItem>
-            <DropdownMenuItem>Favoritar</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Deletar</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex justify-center items-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Abrir Menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Ações</DropdownMenuLabel>
+              <DropdownMenuItem>Editar</DropdownMenuItem>
+              <DropdownMenuItem>Favoritar</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Deletar</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       )
     },
   }

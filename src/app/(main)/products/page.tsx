@@ -1,4 +1,3 @@
-import { SearchNormal1 } from "iconsax-react";
 import { DataTable } from "./components/data-table";
 import { Products, columns } from "./components/columns";
 
@@ -149,21 +148,8 @@ export default function Products() {
                     Gerenciar Produtos
                 </div>
             </div>
-            <div className="flex w-full mt-5 border border-backgrounds-primary-light bg-backgrounds-secondary min-h-screen rounded-lg">
+            <div className="flex w-full mt-5 border border-backgrounds-primary-light bg-backgrounds-secondary rounded-lg">
                 <div className="w-full">
-                    <div className="flex p-6 justify-between items-center">
-                        <div className="w-full max-w-[250px] flex items-center">
-                            <input placeholder="Pesquisar..." type="text" className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-l-md" />
-                            <button className="border-y border-r border-primary-light rounded-r-md p-2 hover:bg-slate-200/10" >
-                                <SearchNormal1 size="20" color="#fff" />
-                            </button>
-                        </div>
-                        <div>
-                            <button className="bg-white transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full py-2 px-5 font-semibold border text-black text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
-                                Adicionar Produto
-                            </button>
-                        </div>
-                    </div>
                     <DataTable columns={columns} data={Fakedata} />
                 </div>
             </div>
