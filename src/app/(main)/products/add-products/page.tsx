@@ -32,7 +32,7 @@ export default function AddProducts() {
                                 </div>
                                 <div className="flex flex-col gap-y-2 w-full">
                                     <span className="text-sm font-medium">Descrição</span>
-                                    <textarea placeholder="Uma breve descrição sobre o seu produto..." className="flex placeholder:text-primary-secundary max-h-28 placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-md"> </textarea>
+                                    <textarea placeholder="Uma breve descrição sobre o seu produto..." className="flex placeholder:text-primary-secundary max-h-28 h-28 placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-md"> </textarea>
                                 </div>
                             </div>
                         </div>
