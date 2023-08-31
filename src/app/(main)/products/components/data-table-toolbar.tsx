@@ -31,9 +31,9 @@ export function DataTableToolbar<TData>({
             </div>
             <div>
                 <button className="bg-white transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full sm:py-2 sm:px-5 p-1 font-semibold border text-black text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
-                    <span className="hidden sm:flex">
+                    <a href="products/add-products" className="hidden sm:flex">
                         Adicionar Produto
-                    </span>
+                    </a>
                     <span>
                         <Plus className="flex sm:hidden" />
                     </span>
