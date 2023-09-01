@@ -1,15 +1,34 @@
+"use client"
+
 import { DataTable } from "./components/data-table";
 import InfoProducts from "./components/InfoProducts";
 import { Variants, columns } from "./components/columns";
 import Image from "next/image";
 import Upload from '../../../assets/Upload.png'
-import { UploadCloud } from "lucide-react";
+import { ImageOff, UploadCloud } from "lucide-react";
+import { useState } from "react";
 
 export default function AddProducts() {
 
     const Fakedata: Variants[] = [
-
     ]
+
+    const listImage = [
+        {
+            id: 0,
+            imagePath: ''
+        },
+        {
+            id: 1,
+            imagePath: ''
+        },
+        {
+            id: 2,
+            imagePath: ''
+        }
+    ]
+
+    const [showImage, setShowImage] = useState(0)
 
     return (
         <main className="text-white">
@@ -18,9 +37,21 @@ export default function AddProducts() {
                     Adicionar Produto
                 </div>
             </div>
-            <div className="min-h-screen grid grid-cols-1 gap-x-3 gap-y-3 md:grid-cols-2 justify-between mt-5">
+            <div className="min-h-screen grid grid-cols-1 gap-x-3 gap-y-3 lg:grid-cols-2 justify-between mt-5">
                 <div className="flex flex-col gap-y-3">
-                    <div className="bg-backgrounds-secondary p-5 rounded-xl flex h-full items-center justify-center">
+                    <div className="bg-backgrounds-secondary p-5 gap-x-2 rounded-xl flex h-full items-center justify-start">
+                        <div className="h-full w-[70%] bg-backgrounds-primary flex flex-col justify-center items-center rounded-lg">
+                            <ImageOff className="w-20 h-20 sm:w-40 sm:h-40 text-white" />
+                        </div>
+                        <div className="flex flex-col gap-y-2 w-[30%] h-full">
+                            {listImage.map(({ id, imagePath }, index: number) => {
+                                return (
+                                    <div onClick={() => setShowImage(index)} className={`w-full py-3 lg:py-0 h-1/3 bg-backgrounds-primary flex flex-col justify-center items-center rounded-lg ${showImage != index && 'opacity-70 cursor-pointer'}`}>
+                                        <ImageOff className="w-10 h-10 sm:w-20 sm:h-20 text-white" />
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                     <InfoProducts />
                 </div>
