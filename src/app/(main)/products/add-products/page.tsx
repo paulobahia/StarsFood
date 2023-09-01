@@ -46,7 +46,7 @@ export default function AddProducts() {
                         <div className="flex flex-col gap-y-2 w-[30%] h-full">
                             {listImage.map(({ id, imagePath }, index: number) => {
                                 return (
-                                    <div onClick={() => setShowImage(index)} className={`w-full py-3 lg:py-0 h-1/3 bg-backgrounds-primary flex flex-col justify-center items-center rounded-lg ${showImage != index && 'opacity-70 cursor-pointer'}`}>
+                                    <div key={index} onClick={() => setShowImage(index)} className={`w-full py-3 lg:py-0 h-1/3 bg-backgrounds-primary flex flex-col justify-center items-center rounded-lg ${showImage != index && 'opacity-70 cursor-pointer'}`}>
                                         <ImageOff className="w-10 h-10 sm:w-20 sm:h-20 text-white" />
                                     </div>
                                 )
