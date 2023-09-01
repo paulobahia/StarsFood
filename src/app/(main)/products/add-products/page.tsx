@@ -55,15 +55,15 @@ export default function AddProducts() {
                     </div>
                     <InfoProducts />
                 </div>
-                <div className="flex flex-col gap-y-3">
-                    <div className="bg-backgrounds-secondary p-5 flex flex-col rounded-xl h-[40%]">
+                <div className="flex flex-col gap-y-3 justify-end">
+                    <div className="bg-backgrounds-secondary p-5 flex flex-col rounded-xl h-2/5">
                         <div className="text-xl font-semibold">
                             Imagens do Produto
                         </div>
                         <div className="flex flex-1 mt-3 border-dashed border border-primary-light rounded-sm h-full items-center justify-center">
-                            <div className="flex gap-0 flex-col">
+                            <div className="flex py-5 flex-col">
                                 <div className="flex justify-center mb-2">
-                                    <UploadCloud className="w-16 h-16" />
+                                    <UploadCloud className="w-10 h-10 sm:w-16 sm:h-16" />
                                 </div>
                                 <div className="flex">
                                     <div className="text-sm font-medium flex">Escolha um arquivo</div>
@@ -76,7 +76,7 @@ export default function AddProducts() {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-backgrounds-secondary p-5 rounded-xl gap-y-3 flex flex-col h-[50%]">
+                    <div className="bg-backgrounds-secondary p-5 rounded-xl gap-y-3 flex flex-col h-[60%]">
                         <div className="flex items-center justify-between">
                             <div className="text-xl font-semibold">
                                 Gerenciar Variações
@@ -91,8 +91,8 @@ export default function AddProducts() {
                             <DataTable columns={columns} data={Fakedata} />
                         </div>
                     </div>
-                    <div className="flex gap-y-6 justify-end">
-                        <button type='submit' className="bg-white max-w-[200px] transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full p-2 border text-black font-medium text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
+                    <div className="flex gap-y-6  justify-end">
+                        <button type='submit' className="bg-white sm:max-w-[200px] mt-1 sm:mt-0 transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full p-2 border text-black font-medium text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
                             Criar Produto
                         </button>
                     </div>
