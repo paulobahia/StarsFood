@@ -1,17 +1,48 @@
 "use client"
 
-import { DataTable } from "./components/data-table";
+import { useState } from "react";
+import { ImageOff, UploadCloud } from "lucide-react";
+
+
 import InfoProducts from "./components/InfoProducts";
 import { Variants, columns } from "./components/columns";
-import Image from "next/image";
-import Upload from '../../../assets/Upload.png'
-import { ImageOff, UploadCloud } from "lucide-react";
-import { useState } from "react";
+import { DataTable } from "./components/data-table";
+
+export interface ProductVariation {
+    id: string
+    name: string
+    range: string
+    price: string
+}
 
 export default function AddProducts() {
+    const [showImage, setShowImage] = useState(0)
+    const [variations, setVariations] = useState<ProductVariation[]>([
+        {
+            id: '0',
+            name: 'Porção de Batata Frita',
+            price: 'R$ 8,00',
+            range: '300g',
+        },
+        {
+            id: '1',
+            name: 'Porção de Batata Frita',
+            price: 'R$ 12,00',
+            range: '500g',
+        },
+        {
+            id: '2',
+            name: 'Porção de Batata Frita',
+            price: 'R$ 15,00',
+            range: '800g',
+        }
+    ]);
 
-    const Fakedata: Variants[] = [
-    ]
+    const handleEdit = (index: number, updatedData: ProductVariation) => {
+        const updatedVariations = [...variations];
+        updatedVariations[index] = updatedData;
+        setVariations(updatedVariations);
+    };
 
     const listImage = [
         {
@@ -28,7 +59,6 @@ export default function AddProducts() {
         }
     ]
 
-    const [showImage, setShowImage] = useState(0)
 
     return (
         <main className="text-white">
@@ -46,7 +76,7 @@ export default function AddProducts() {
                         <div className="flex flex-col gap-y-2 w-[30%] h-full">
                             {listImage.map(({ id, imagePath }, index: number) => {
                                 return (
-                                    <div key={index} onClick={() => setShowImage(index)} className={`w-full py-3 lg:py-0 h-1/3 bg-backgrounds-primary flex flex-col justify-center items-center rounded-lg ${showImage != index && 'opacity-70 cursor-pointer'}`}>
+                                    <div key={index} onClick={() => setShowImage(index)} className={`w-full py-3 h-1/3 bg-backgrounds-primary flex flex-col justify-center items-center rounded-lg ${showImage != index && 'opacity-70 cursor-pointer'}`}>
                                         <ImageOff className="w-10 h-10 sm:w-20 sm:h-20 text-white" />
                                     </div>
                                 )
@@ -88,7 +118,7 @@ export default function AddProducts() {
                             </div>
                         </div>
                         <div className="w-full h-full">
-                            <DataTable columns={columns} data={Fakedata} />
+                            <DataTable columns={columns} data={variations} onEdit={handleEdit} />
                         </div>
                     </div>
                     <div className="flex gap-y-6  justify-end">

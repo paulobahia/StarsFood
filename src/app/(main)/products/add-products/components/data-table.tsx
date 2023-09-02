@@ -20,14 +20,17 @@ import {
 } from "@/app/components/ui/table"
 
 import { useState } from "react"
+import { ProductVariation } from "../page"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    onEdit: (index: number, updatedData: ProductVariation) => void;
 }
 
-export function DataTable<TData, TValue>({ columns, data, }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, onEdit }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [editIndex, setEditIndex] = useState<number>(-1);
     const table = useReactTable({
         data,
         columns,
@@ -39,6 +42,15 @@ export function DataTable<TData, TValue>({ columns, data, }: DataTableProps<TDat
             columnFilters,
         },
     })
+
+    const handleEditClick = (index: number) => {
+        setEditIndex(index);
+    };
+
+    const handleSaveClick = (index: number, updatedData: ProductVariation) => {
+        onEdit(index, updatedData);
+        setEditIndex(-1);
+    };
 
     return (
         <div className="rounded-md border overflow-auto">

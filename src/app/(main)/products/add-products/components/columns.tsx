@@ -13,6 +13,7 @@ import {
 import { Button } from "@/app/components/ui/button"
 
 import { Edit } from "lucide-react"
+import { ProductVariation } from "../page"
 
 export type Variants = {
     id: string
@@ -25,7 +26,7 @@ export const columns: ColumnDef<Variants>[] = [
     {
         accessorKey: "name",
         header: ({ column }) => (<div className="flex text-xs">Produto</div>),
-        cell: ({ row }) => <div className="text-primary-light text-xs w-[150px]">{row.getValue("name")}</div>
+        cell: ({ row }) => <div className="text-primary-light text-xs w-[150px]">{row.getValue("name")}</div>,
     },
     {
         accessorKey: "range",
@@ -34,8 +35,8 @@ export const columns: ColumnDef<Variants>[] = [
     },
     {
         accessorKey: "price",
-        header: ({ column }) => (<div className="flex text-xs">Preço</div>),
-        cell: ({ row }) => <div className="text-xs w-[100px]">{row.getValue("price")}</div>
+        header: ({ column }) => (<div className="flex text-xs justify-center">Preço</div>),
+        cell: ({ row }) => <div className="text-xs w-[100px] flex justify-center">{row.getValue("price")}</div>
     },
     {
         id: "actions",
