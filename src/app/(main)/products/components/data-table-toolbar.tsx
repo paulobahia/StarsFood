@@ -1,19 +1,17 @@
 "use client"
 
 import { Table } from "@tanstack/react-table"
-
+import { useRouter } from 'next/navigation'
 import { Input } from "@/app/components/ui/input"
 import { SearchNormal1 } from "iconsax-react"
 import { Plus } from "lucide-react"
-// import { DataTableViewOptions } from "@/app/examples/tasks/components/data-table-view-options"
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>
 }
 
-export function DataTableToolbar<TData>({
-    table,
-}: DataTableToolbarProps<TData>) {
+export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
+    const router = useRouter()
     return (
         <div className="flex p-6 justify-between items-center">
             <div className="w-full max-w-[220px] sm:max-w-[250px] flex items-center">
@@ -30,16 +28,13 @@ export function DataTableToolbar<TData>({
                 </button>
             </div>
             <div>
-                <button className="bg-white transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full sm:py-2 sm:px-5 p-1 font-semibold border text-black text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
-                    <a href="products/add-products" className="hidden sm:flex">
-                        Adicionar Produto
-                    </a>
+                <button onClick={() => router.push('/products/add-products')} className="bg-white transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full sm:py-2 sm:px-5 p-1 font-semibold border text-black text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
+                    Adicionar Produto
                     <span>
                         <Plus className="flex sm:hidden" />
                     </span>
                 </button>
             </div>
-            {/* <DataTableViewOptions table={table} /> */}
         </div>
     )
 }

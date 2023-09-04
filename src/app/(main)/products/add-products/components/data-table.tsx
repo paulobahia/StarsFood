@@ -7,7 +7,8 @@ import {
     useReactTable,
     getPaginationRowModel,
     ColumnFiltersState,
-    getFilteredRowModel
+    getFilteredRowModel,
+    RowSelectionTableState
 } from "@tanstack/react-table"
 
 import {
@@ -20,17 +21,18 @@ import {
 } from "@/app/components/ui/table"
 
 import { useState } from "react"
-import { ProductVariation } from "../page"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
-    onEdit: (index: number, updatedData: ProductVariation) => void;
+    onEdit: (rowIndex: number, columnId: string, value: string) => void;
+    onRemove: (rowIndex: number) => void;
+    onRevert: (rowIndex: number, revert: boolean) => void;
 }
 
-export function DataTable<TData, TValue>({ columns, data, onEdit }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, onEdit, onRevert, onRemove }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-    const [editIndex, setEditIndex] = useState<number>(-1);
+    const [editedRows, setEditedRows] = useState({});
     const table = useReactTable({
         data,
         columns,
@@ -41,16 +43,14 @@ export function DataTable<TData, TValue>({ columns, data, onEdit }: DataTablePro
         state: {
             columnFilters,
         },
+        meta: {
+            onEdit,
+            editedRows,
+            setEditedRows,
+            onRevert,
+            onRemove
+        }
     })
-
-    const handleEditClick = (index: number) => {
-        setEditIndex(index);
-    };
-
-    const handleSaveClick = (index: number, updatedData: ProductVariation) => {
-        onEdit(index, updatedData);
-        setEditIndex(-1);
-    };
 
     return (
         <div className="rounded-md border overflow-auto">
@@ -82,7 +82,7 @@ export function DataTable<TData, TValue>({ columns, data, onEdit }: DataTablePro
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell className="p-0 px-4 py-1" key={cell.id}>
+                                        <TableCell className="px-4 py-1" key={cell.id}>
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}

@@ -1,55 +1,28 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/app/components/ui/dropdown-menu"
-import { Button } from "@/app/components/ui/button"
+import TableCell from "./table-cell"
+import EditCell from "./edit-cell"
+import { Variants } from "../page"
 
-import { Edit } from "lucide-react"
-import { ProductVariation } from "../page"
+const columnHelper = createColumnHelper<Variants>();
 
-export type Variants = {
-    id: string
-    name: string
-    range: string
-    price: string
-}
-
-export const columns: ColumnDef<Variants>[] = [
-    {
-        accessorKey: "name",
+export const columns = [
+    columnHelper.accessor('name', {
         header: ({ column }) => (<div className="flex text-xs">Produto</div>),
         cell: ({ row }) => <div className="text-primary-light text-xs w-[150px]">{row.getValue("name")}</div>,
-    },
-    {
-        accessorKey: "range",
+    }),
+    columnHelper.accessor('range', {
         header: ({ column }) => (<div className="flex text-xs justify-center mr-2">Tamanho</div>),
-        cell: ({ row }) => <div className="text-xs w-[100px] flex justify-center">{row.getValue("range")}</div>
-    },
-    {
-        accessorKey: "price",
-        header: ({ column }) => (<div className="flex text-xs justify-center">Preço</div>),
-        cell: ({ row }) => <div className="text-xs w-[100px] flex justify-center">{row.getValue("price")}</div>
-    },
-    {
+        cell: TableCell,
+    }),
+    columnHelper.accessor('price', {
+        header: ({ column }) => (<div className="flex text-xs w-[100px] justify-center">Preço</div>),
+        cell: TableCell
+    }),
+    columnHelper.display({
         id: "actions",
-        cell: ({ row }) => {
-
-            return (
-                <div className="flex justify-center items-center">
-                    <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Abrir Menu</span>
-                        <Edit className="h-4 w-4" />
-                    </Button>
-                </div>
-            )
-        },
-    }
+        cell: EditCell,
+    }),
 ]

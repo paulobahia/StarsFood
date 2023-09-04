@@ -1,63 +1,107 @@
 "use client"
 
-import { useState } from "react";
-import { ImageOff, UploadCloud } from "lucide-react";
-
+import { useCallback, useEffect, useState } from "react";
 
 import InfoProducts from "./components/InfoProducts";
-import { Variants, columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
+import { columns } from "./components/columns";
+import ImageProducts from "./components/ImageProducts";
+import DragInDropImage, { Imagens } from "./components/drag-in-drop";
 
-export interface ProductVariation {
-    id: string
+export type Variants = {
     name: string
     range: string
     price: string
 }
 
-export default function AddProducts() {
-    const [showImage, setShowImage] = useState(0)
-    const [variations, setVariations] = useState<ProductVariation[]>([
-        {
-            id: '0',
-            name: 'Porção de Batata Frita',
-            price: 'R$ 8,00',
-            range: '300g',
-        },
-        {
-            id: '1',
-            name: 'Porção de Batata Frita',
-            price: 'R$ 12,00',
-            range: '500g',
-        },
-        {
-            id: '2',
-            name: 'Porção de Batata Frita',
-            price: 'R$ 15,00',
-            range: '800g',
-        }
-    ]);
+const defaultData: Variants[] = [
+    {
+        name: 'Porção de Batata Frita',
+        price: 'R$ 8,00',
+        range: '300',
+    },
+    {
+        name: 'Porção de Batata Frita',
+        price: 'R$ 12,00',
+        range: '500',
+    },
+    {
+        name: 'Porção de Batata Frita',
+        price: 'R$ 15,00',
+        range: '800',
+    }
+]
 
-    const handleEdit = (index: number, updatedData: ProductVariation) => {
-        const updatedVariations = [...variations];
-        updatedVariations[index] = updatedData;
-        setVariations(updatedVariations);
+const defaultImagens: Imagens[] = [
+    {
+        imagePath: ''
+    },
+    {
+        imagePath: ''
+    },
+    {
+        imagePath: ''
+    }
+]
+
+export default function AddProducts() {
+    const [productsImage, setProductsImage] = useState<Imagens[]>(() => [...defaultImagens]);
+    const [variations, setVariations] = useState<Variants[]>(() => [...defaultData]);
+    const [originalData, setOriginalData] = useState([...variations])
+
+    useEffect(() => {
+        setOriginalData(variations)
+    }, [variations])
+
+    const handleAdd = () => {
+        const newItem: Variants = {
+            name: "Porção de Batata Frita",
+            range: "",
+            price: "",
+        };
+
+        setVariations((old) => [...old, newItem]);
     };
 
-    const listImage = [
-        {
-            id: 0,
-            imagePath: ''
-        },
-        {
-            id: 1,
-            imagePath: ''
-        },
-        {
-            id: 2,
-            imagePath: ''
+    const handleEdit = (rowIndex: number, columnId: string, value: string) => {
+        setVariations((old) =>
+            old.map((row, index) => {
+                if (index === rowIndex) {
+                    return {
+                        ...old[rowIndex],
+                        [columnId]: value,
+                    };
+                }
+                return row;
+            })
+        );
+    };
+
+    const handleRemove = (rowIndex: number) => {
+        setVariations((old) => old.filter((_, index) => index !== rowIndex));
+    };
+
+    const handleRevert = (rowIndex: number, revert: boolean) => {
+        if (revert) {
+            setVariations((old) =>
+                old.map((row, index) =>
+                    index === rowIndex ? originalData[rowIndex] : row
+                )
+            );
+        } else {
+            setOriginalData((old) =>
+                old.map((row, index) => (index === rowIndex ? variations[rowIndex] : row))
+            );
         }
-    ]
+    }
+
+    const handleRemoveImage = (index: number) => {
+        if (index >= 0 && index < productsImage.length) {
+            const updatedItems = [...productsImage];
+            updatedItems[index] = { imagePath: '' };
+            setProductsImage(updatedItems);
+        }
+    };
 
 
     return (
@@ -69,56 +113,24 @@ export default function AddProducts() {
             </div>
             <div className="min-h-screen grid grid-cols-1 gap-x-3 gap-y-3 lg:grid-cols-2 justify-between mt-5">
                 <div className="flex flex-col gap-y-3">
-                    <div className="bg-backgrounds-secondary p-5 gap-x-2 rounded-xl flex h-full items-center justify-start">
-                        <div className="h-full w-[70%] bg-backgrounds-primary flex flex-col justify-center items-center rounded-lg">
-                            <ImageOff className="w-20 h-20 sm:w-40 sm:h-40 text-white" />
-                        </div>
-                        <div className="flex flex-col gap-y-2 w-[30%] h-full">
-                            {listImage.map(({ id, imagePath }, index: number) => {
-                                return (
-                                    <div key={index} onClick={() => setShowImage(index)} className={`w-full py-3 h-1/3 bg-backgrounds-primary flex flex-col justify-center items-center rounded-lg ${showImage != index && 'opacity-70 cursor-pointer'}`}>
-                                        <ImageOff className="w-10 h-10 sm:w-20 sm:h-20 text-white" />
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>
+                    <ImageProducts productsImage={productsImage} onRemove={handleRemoveImage} />
                     <InfoProducts />
                 </div>
                 <div className="flex flex-col gap-y-3 justify-end">
-                    <div className="bg-backgrounds-secondary p-5 flex flex-col rounded-xl h-2/5">
-                        <div className="text-xl font-semibold">
-                            Imagens do Produto
-                        </div>
-                        <div className="flex flex-1 mt-3 border-dashed border border-primary-light rounded-sm h-full items-center justify-center">
-                            <div className="flex py-5 flex-col">
-                                <div className="flex justify-center mb-2">
-                                    <UploadCloud className="w-10 h-10 sm:w-16 sm:h-16" />
-                                </div>
-                                <div className="flex">
-                                    <div className="text-sm font-medium flex">Escolha um arquivo</div>
-                                    &nbsp;
-                                    <div className="text-sm font-normal text-primary-light"> ou arraste ele aqui</div>
-                                </div>
-                                <div className="flex justify-center">
-                                    <div className="text-xs font-normal text-primary-light">Arquivos PNG, JPG e GIF são permitidos.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <DragInDropImage productsImage={productsImage} setProductsImage={setProductsImage} />
                     <div className="bg-backgrounds-secondary p-5 rounded-xl gap-y-3 flex flex-col h-[60%]">
                         <div className="flex items-center justify-between">
                             <div className="text-xl font-semibold">
                                 Gerenciar Variações
                             </div>
                             <div>
-                                <button type='submit' className="bg-white transition-colors items-center flex justify-center ease-in-out w-full py-1.5 px-2 border text-black font-medium text-xs rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
+                                <button onClick={handleAdd} className="bg-white transition-colors items-center flex justify-center ease-in-out w-full py-1.5 px-2 border text-black font-medium text-xs rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
                                     Adicionar Variantes
                                 </button>
                             </div>
                         </div>
                         <div className="w-full h-full">
-                            <DataTable columns={columns} data={variations} onEdit={handleEdit} />
+                            <DataTable columns={columns} data={variations} onEdit={handleEdit} onRevert={handleRevert} onRemove={handleRemove} />
                         </div>
                     </div>
                     <div className="flex gap-y-6  justify-end">
