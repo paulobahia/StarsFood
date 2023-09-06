@@ -8,7 +8,7 @@ interface NotifyRootProps {
 }
 
 const NotifyRoot = ({ children }: NotifyRootProps) => {
-    const [position, setPosition] = useState<string>('-translate-y-20');
+    const [position, setPosition] = useState<string>('-translate-y-28');
 
     useEffect(() => {
         setTimeout(() => {

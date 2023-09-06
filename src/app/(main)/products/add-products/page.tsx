@@ -99,17 +99,17 @@ export default function AddProducts() {
 
     function handleValidateProduct(): boolean {
 
-        if (variations.length <= 0) {
-            _Notify.showNotify('Erro ao Criar Produto', 'É necessário adicionar ao menos uma variação.', 'Error')
-            return false
-        }
-
         const validProductImage = productsImage.every((item) => {
             return typeof item === 'object' && 'imagePath' in item && item.imagePath === '';
         });
 
         if (validProductImage) {
             _Notify.showNotify('Erro ao Criar Produto', 'É necessário adicionar as 3 imgens do produto.', 'Error')
+            return false
+        }
+
+        if (variations.length <= 0) {
+            _Notify.showNotify('Erro ao Criar Produto', 'É necessário adicionar ao menos uma variação.', 'Error')
             return false
         }
 
@@ -132,7 +132,7 @@ export default function AddProducts() {
             <div className="min-h-screen grid grid-cols-1 gap-x-3 gap-y-3 lg:grid-cols-2 justify-between mt-5">
                 <div className="flex flex-col gap-y-3">
                     <ImageProducts productsImage={productsImage} onRemove={handleRemoveImage} />
-                    <InfoProducts setProductName={setProductName} productName={productName} register={register} errors={errors} />
+                    <InfoProducts setProductName={setProductName} productName={productName} register={register} errors={errors} variations={variations} />
                 </div>
                 <div className="flex flex-col gap-y-3 justify-end">
                     <DragInDropImage productsImage={productsImage} setProductsImage={setProductsImage} />
@@ -142,12 +142,12 @@ export default function AddProducts() {
                                 Gerenciar Variações
                             </div>
                             <div>
-                                <button disabled={productName == null || productName == ''} type='button' onClick={handleAdd} className="bg-white cursor-pointer transition-colors items-center flex justify-center ease-in-out w-full py-1.5 px-2 border text-black font-medium text-xs rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black disabled:cursor-default">
+                                <button disabled={productName == null || productName == ''} type='button' onClick={handleAdd} className="bg-white transition-colors flex items-center justify-center ease-in-out w-full py-1.5 px-2 border text-black font-medium text-xs rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black disabled:cursor-default">
                                     Adicionar Variantes
                                 </button>
                             </div>
                         </div>
-                        <div className="w-full h-full">
+                        <div className="w-full h-full overflow-auto">
                             <DataTable columns={columns} data={variations} onEdit={handleEdit} onRevert={handleRevert} onRemove={handleRemove} />
                         </div>
                     </div>

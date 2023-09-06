@@ -29,7 +29,9 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
             </div>
             <div>
                 <button onClick={() => router.push('/products/add-products')} className="bg-white transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full sm:py-2 sm:px-5 p-1 font-semibold border text-black text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
-                    Adicionar Produto
+                    <span className="sm:flex hidden">
+                        Adicionar Produto
+                    </span>
                     <span>
                         <Plus className="flex sm:hidden" />
                     </span>
