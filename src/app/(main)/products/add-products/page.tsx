@@ -2,35 +2,22 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { z } from 'zod'
 import InfoProducts from "./components/InfoProducts";
 import { DataTable } from "./components/data-table";
 import { columns } from "./components/columns";
 import ImageProducts from "./components/ImageProducts";
 import DragInDropImage, { Imagens } from "./components/drag-in-drop";
+import { infoProductsFormSchema } from "@/schemas/products/productsFormSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Notify } from "@/context/NotifyContext";
 
 export type Variants = {
     name: string
     range: string
     price: string
 }
-
-const defaultData: Variants[] = [
-    {
-        name: 'Porção de Batata Frita',
-        price: 'R$ 8,00',
-        range: '300',
-    },
-    {
-        name: 'Porção de Batata Frita',
-        price: 'R$ 12,00',
-        range: '500',
-    },
-    {
-        name: 'Porção de Batata Frita',
-        price: 'R$ 15,00',
-        range: '800',
-    }
-]
 
 const defaultImagens: Imagens[] = [
     {
@@ -45,9 +32,16 @@ const defaultImagens: Imagens[] = [
 ]
 
 export default function AddProducts() {
+    type InfoProdutctsFormData = z.infer<typeof infoProductsFormSchema>
+    const [productName, setProductName] = useState<string | null>(null)
     const [productsImage, setProductsImage] = useState<Imagens[]>(() => [...defaultImagens]);
-    const [variations, setVariations] = useState<Variants[]>(() => [...defaultData]);
+    const [variations, setVariations] = useState<Variants[]>([]);
     const [originalData, setOriginalData] = useState([...variations])
+    const _Notify = Notify();
+
+    const { register, handleSubmit, formState: { errors } } = useForm<InfoProdutctsFormData>({
+        resolver: zodResolver(infoProductsFormSchema)
+    })
 
     useEffect(() => {
         setOriginalData(variations)
@@ -55,7 +49,7 @@ export default function AddProducts() {
 
     const handleAdd = () => {
         const newItem: Variants = {
-            name: "Porção de Batata Frita",
+            name: productName!,
             range: "",
             price: "",
         };
@@ -103,9 +97,33 @@ export default function AddProducts() {
         }
     };
 
+    function handleValidateProduct(): boolean {
+
+        if (variations.length <= 0) {
+            _Notify.showNotify('Erro ao Criar Produto', 'É necessário adicionar ao menos uma variação.', 'Error')
+            return false
+        }
+
+        const validProductImage = productsImage.every((item) => {
+            return typeof item === 'object' && 'imagePath' in item && item.imagePath === '';
+        });
+
+        if (validProductImage) {
+            _Notify.showNotify('Erro ao Criar Produto', 'É necessário adicionar as 3 imgens do produto.', 'Error')
+            return false
+        }
+
+        return true
+    }
+
+    const createProduct: SubmitHandler<InfoProdutctsFormData> = ({ name, category, description, type }) => {
+        if (handleValidateProduct()) {
+            // console.log(variations)
+        }
+    }
 
     return (
-        <main className="text-white">
+        <form onSubmit={handleSubmit(createProduct)} className="text-white">
             <div className="flex-col flex justify-center items-center gap-y-4">
                 <div className="flex flex-1 w-full text-3xl font-semibold">
                     Adicionar Produto
@@ -114,7 +132,7 @@ export default function AddProducts() {
             <div className="min-h-screen grid grid-cols-1 gap-x-3 gap-y-3 lg:grid-cols-2 justify-between mt-5">
                 <div className="flex flex-col gap-y-3">
                     <ImageProducts productsImage={productsImage} onRemove={handleRemoveImage} />
-                    <InfoProducts />
+                    <InfoProducts setProductName={setProductName} productName={productName} register={register} errors={errors} />
                 </div>
                 <div className="flex flex-col gap-y-3 justify-end">
                     <DragInDropImage productsImage={productsImage} setProductsImage={setProductsImage} />
@@ -124,7 +142,7 @@ export default function AddProducts() {
                                 Gerenciar Variações
                             </div>
                             <div>
-                                <button onClick={handleAdd} className="bg-white transition-colors items-center flex justify-center ease-in-out w-full py-1.5 px-2 border text-black font-medium text-xs rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
+                                <button disabled={productName == null || productName == ''} type='button' onClick={handleAdd} className="bg-white cursor-pointer transition-colors items-center flex justify-center ease-in-out w-full py-1.5 px-2 border text-black font-medium text-xs rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black disabled:cursor-default">
                                     Adicionar Variantes
                                 </button>
                             </div>
@@ -140,6 +158,6 @@ export default function AddProducts() {
                     </div>
                 </div>
             </div>
-        </main>
+        </form>
     )
 }

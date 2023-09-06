@@ -17,12 +17,14 @@ const ImageProducts = ({ productsImage, onRemove }: ImageProductsProps) => {
 
     return (
         <div className="bg-backgrounds-secondary p-5 gap-x-2 rounded-xl flex h-full items-center justify-start">
-            <div className="h-full w-[70%] bg-backgrounds-primary flex flex-col justify-center items-center rounded-lg">
+            <div className="h-full w-[70%] flex flex-col items-center justify-center">
                 {selectedImage === ''
                     ?
-                    <ImageOff className="w-20 h-20 sm:w-40 sm:h-40 text-white" />
+                    <div className="bg-backgrounds-primary w-full justify-center h-full items-center rounded-lg flex">
+                        <ImageOff className="w-20 h-20 sm:w-40 sm:h-40 text-white" />
+                    </div>
                     :
-                    <div className="w-full h-[568px]">
+                    <div className="w-full h-full">
                         <img className="w-full h-full rounded-lg" src={selectedImage} alt="imagePath" />
                     </div>
                 }

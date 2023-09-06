@@ -70,13 +70,13 @@ const DragInDropImage = ({ productsImage, setProductsImage }: DragInDropImagePro
     };
 
     return (
-        <div className="bg-backgrounds-secondary p-5 flex flex-col rounded-xl h-2/5">
+        <div className="bg-backgrounds-secondary p-5 flex flex-col rounded-xl h-auto flex-1">
             <div className="text-xl font-semibold">
                 Imagens do Produto
             </div>
             <div
                 onClick={openFileInput}
-                className={`flex flex-1 mt-3 border-2 cursor-pointer border-primary-light rounded-sm h-full items-center justify-center ${isHovered ? "opacity-100 border-white" : "border-dashed opacity-50"}`}
+                className={`flex flex-1 border-2 cursor-pointer border-primary-light rounded-sm mt-3 items-center justify-center ${isHovered ? "opacity-100 border-white" : "border-dashed opacity-50"}`}
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
                 onDragEnter={handleDragEnter}

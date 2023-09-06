@@ -17,7 +17,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         return (
             <div className="py-1 flex justify-center items-center">
                 <input
-                    className="flex placeholder:text-primary-secundary text-center max-w-[50%] placeholder:text-xs p-2 bg-transparent border text-sm border-primary-light text-white rounded-md"
+                    className="flex placeholder:text-primary-secundary w-28 text-center placeholder:text-xs p-2 bg-transparent border text-sm border-primary-light text-white rounded-md"
                     value={value}
                     onChange={e => setValue(e.target.value)}
                     onBlur={onBlur}
