@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 const TableCell = ({ getValue, row, column, table }: any) => {
     const initialValue = getValue()
+    const columnMeta = column.columnDef.meta
     const [value, setValue] = useState<string>("")
     const tableMeta = table.options.meta
 
@@ -28,16 +29,27 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     };
 
     if (tableMeta?.editedRows[row.id]) {
-        return (
-            <div className="py-1 flex justify-center items-center">
-                <input
-                    className="flex placeholder:text-primary-secundary w-28 text-center placeholder:text-xs p-2 bg-transparent border text-sm border-primary-light text-white rounded-md"
-                    value={value}
-                    onChange={handleChange}
-                    onBlur={onBlur}
-                />
-            </div>
-        )
+        return columnMeta?.type === "price" ?
+            (
+                <div className="py-1 flex justify-center items-center">
+                    <input
+                        className="flex placeholder:text-primary-secundary w-28 text-center placeholder:text-xs p-2 bg-transparent border text-sm border-primary-light text-white rounded-md"
+                        value={value}
+                        onChange={handleChange}
+                        onBlur={onBlur}
+                    />
+                </div>
+            ) :
+            (
+                <div className="py-1 flex justify-center items-center">
+                    <input
+                        className="flex placeholder:text-primary-secundary w-28 text-center placeholder:text-xs p-2 bg-transparent border text-sm border-primary-light text-white rounded-md"
+                        value={value}
+                        onChange={e => setValue(e.target.value)}
+                        onBlur={onBlur}
+                    />
+                </div>
+            )
     }
     return <div className="text-xs flex justify-center">{value}</div>
 }

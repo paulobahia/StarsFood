@@ -19,7 +19,10 @@ export const columns = [
     }),
     columnHelper.accessor('price', {
         header: ({ column }) => (<div className="flex text-xs items-center justify-center">Preço</div>),
-        cell: TableCell
+        cell: TableCell,
+        meta: {
+            type: 'price'
+        }
     }),
     columnHelper.display({
         id: "actions",
