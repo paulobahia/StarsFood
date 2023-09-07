@@ -15,6 +15,15 @@ const ImageProducts = ({ productsImage, onRemove }: ImageProductsProps) => {
         setSelectedImage('')
     }
 
+    useEffect(() => {
+
+        if (productsImage.every(item => item.imagePath !== '')) {
+            setSelectedImage(productsImage[0].imagePath)
+        }
+
+    }, [productsImage])
+
+
     return (
         <div className="bg-backgrounds-secondary p-5 gap-x-2 rounded-xl flex h-full items-center justify-start">
             <div className="h-52 sm:h-full w-[70%] flex flex-col items-center justify-center">
@@ -41,7 +50,7 @@ const ImageProducts = ({ productsImage, onRemove }: ImageProductsProps) => {
                                 :
                                 <div onClick={() => setSelectedImage(imagePath)} className={`w-full h-16 sm:h-[185px] justify-center items-center flex ${selectedImage != imagePath && 'opacity-50 cursor-pointer'}`} >
                                     {selectedImage == imagePath &&
-                                        <div onClick={() => handleRemove(index)} className="absolute cursor-pointer top-2 right-2">
+                                        <div onClick={() => handleRemove(index)} className="absolute bg-black/50 rounded-sm p-0.5 cursor-pointer top-2 right-2">
                                             <X className="w-6 h-6 text-white" />
                                         </div>
                                     }
