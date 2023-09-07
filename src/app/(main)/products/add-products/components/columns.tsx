@@ -14,7 +14,7 @@ export const columns = [
         cell: ({ row }) => <div className="text-primary-light text-xs">{row.getValue("name")}</div>,
     }),
     columnHelper.accessor('range', {
-        header: ({ column }) => (<div className="flex text-xs justify-center">Tamanho</div>),
+        header: ({ column }) => (<div className="flex text-xs justify-center">Quantidade</div>),
         cell: TableCell,
     }),
     columnHelper.accessor('price', {

@@ -27,10 +27,9 @@ interface DataTableProps<TData, TValue> {
     data: TData[]
     onEdit: (rowIndex: number, columnId: string, value: string) => void;
     onRemove: (rowIndex: number) => void;
-    onRevert: (rowIndex: number, revert: boolean) => void;
 }
 
-export function DataTable<TData, TValue>({ columns, data, onEdit, onRevert, onRemove }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, onEdit, onRemove }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [editedRows, setEditedRows] = useState({});
     const table = useReactTable({
@@ -47,7 +46,6 @@ export function DataTable<TData, TValue>({ columns, data, onEdit, onRevert, onRe
             onEdit,
             editedRows,
             setEditedRows,
-            onRevert,
             onRemove
         }
     })

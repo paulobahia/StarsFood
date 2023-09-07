@@ -12,6 +12,7 @@ import { infoProductsFormSchema } from "@/schemas/products/productsFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Notify } from "@/context/NotifyContext";
+import { useRouter } from "next/navigation";
 
 export type Variants = {
     name: string
@@ -36,16 +37,12 @@ export default function AddProducts() {
     const [productName, setProductName] = useState<string | null>(null)
     const [productsImage, setProductsImage] = useState<Imagens[]>(() => [...defaultImagens]);
     const [variations, setVariations] = useState<Variants[]>([]);
-    const [originalData, setOriginalData] = useState([...variations])
     const _Notify = Notify();
+    const router = useRouter()
 
     const { register, handleSubmit, formState: { errors } } = useForm<InfoProdutctsFormData>({
         resolver: zodResolver(infoProductsFormSchema)
     })
-
-    useEffect(() => {
-        setOriginalData(variations)
-    }, [variations])
 
     const handleAdd = () => {
         const newItem: Variants = {
@@ -75,20 +72,6 @@ export default function AddProducts() {
         setVariations((old) => old.filter((_, index) => index !== rowIndex));
     };
 
-    const handleRevert = (rowIndex: number, revert: boolean) => {
-        if (revert) {
-            setVariations((old) =>
-                old.map((row, index) =>
-                    index === rowIndex ? originalData[rowIndex] : row
-                )
-            );
-        } else {
-            setOriginalData((old) =>
-                old.map((row, index) => (index === rowIndex ? variations[rowIndex] : row))
-            );
-        }
-    }
-
     const handleRemoveImage = (index: number) => {
         if (index >= 0 && index < productsImage.length) {
             const updatedItems = [...productsImage];
@@ -103,6 +86,12 @@ export default function AddProducts() {
             return typeof item === 'object' && 'imagePath' in item && item.imagePath === '';
         });
 
+        const isItemValid = (item: Variants) => {
+            return item.range.trim() !== '' && item.price.trim() !== '';
+        };
+
+        const allItemsAreValid = variations.every(isItemValid);
+
         if (validProductImage) {
             _Notify.showNotify('Erro ao Criar Produto', 'É necessário adicionar as 3 imgens do produto.', 'Error')
             return false
@@ -113,12 +102,27 @@ export default function AddProducts() {
             return false
         }
 
+        if (!allItemsAreValid) {
+            _Notify.showNotify('Erro ao Criar Produto', 'Alguns itens não têm o quantidade e preço preenchidos corretamente.', 'Error')
+            return false;
+        }
+
         return true
     }
 
     const createProduct: SubmitHandler<InfoProdutctsFormData> = ({ name, category, description, type }) => {
         if (handleValidateProduct()) {
-            // console.log(variations)
+            var postData = {
+                name,
+                category,
+                description,
+                type,
+                productsImage,
+                variations
+            }
+            router.push('/products')
+            _Notify.showNotify(' Produto Criado com Sucesso', 'Seu produto foi criado com sucesso e está pronto para ser exibido.', 'Success')
+            console.log(postData)
         }
     }
 
@@ -148,7 +152,7 @@ export default function AddProducts() {
                             </div>
                         </div>
                         <div className="w-full h-full overflow-auto">
-                            <DataTable columns={columns} data={variations} onEdit={handleEdit} onRevert={handleRevert} onRemove={handleRemove} />
+                            <DataTable columns={columns} data={variations} onEdit={handleEdit} onRemove={handleRemove} />
                         </div>
                     </div>
                     <div className="flex gap-y-6  justify-end">
