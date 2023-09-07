@@ -5,6 +5,7 @@ import { checkEmailFormSchema } from '@/schemas/auth/registerFormSchema'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { checkEmail } from '@/services'
 import { Notify } from '@/context/NotifyContext'
+import PingLoading from '@/app/components/ui/pingLoading'
 
 interface Step1Props {
     onNextStep: () => void,
@@ -53,8 +54,14 @@ const Step1: React.FC<Step1Props> = ({ onNextStep, setEmail }) => {
                 <input {...register('email')} name='email' placeholder="nome@exemplo.com" type="email" className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-md" />
                 {errors.email && <span className='text-danger-base w-full text-xs font-semibold'>{errors.email.message}</span>}
                 <button disabled={loading} type='submit' className="bg-white transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full p-2 mt-1 border text-black font-medium text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
-                    {loading && <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />}
-                    Criar com E-mail
+                    {loading
+                        ?
+                        <PingLoading />
+                        :
+                        <span>
+                            Criar com E-mail
+                        </span>
+                    }
                 </button>
             </form>
             <div className="mt-6 gap-x-3 flex items-center justify-center w-full">
@@ -65,7 +72,16 @@ const Step1: React.FC<Step1Props> = ({ onNextStep, setEmail }) => {
                 <div className="bg-primary-secundary p-[0.2px] rounded-full flex-1" />
             </div>
             <button disabled={loading} className="bg-transparent w-full p-2 mt-4 border font-medium border-primary-secundary text-white text-sm rounded-md hover:bg-white/10 disabled:bg-neutral-600">
-                Google
+                {loading
+                    ?
+                    <span className='flex justify-center'>
+                        <PingLoading />
+                    </span>
+                    :
+                    <span>
+                        Google
+                    </span>
+                }
             </button>
             <span className="text-primary-secundary text-center text-sm mt-6">
                 Ao clicar em continuar, você concorda com nossos <br />

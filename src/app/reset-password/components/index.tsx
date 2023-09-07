@@ -10,6 +10,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { Notify } from "@/context/NotifyContext"
 import { resetPasswordFormSchema } from "@/schemas/user/passwordResetFormSchema"
 import { resetPassword } from "@/services"
+import PingLoading from "@/app/components/ui/pingLoading"
 
 const ResetPasswordForm = () => {
     type ResetPasswordFormData = z.infer<typeof resetPasswordFormSchema>
@@ -60,8 +61,14 @@ const ResetPasswordForm = () => {
             </div>
             <div className='relative w-full mt-3'>
                 <button disabled={loading} type='submit' className="bg-white transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full p-2 mt-1 border text-black font-medium text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
-                    {loading && <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />}
-                    Recuperar
+                    {loading
+                        ?
+                        <PingLoading />
+                        :
+                        <span>
+                            Recuperar
+                        </span>
+                    }
                 </button>
                 <span className="justify-center items-center w-full mt-3 font-normal text-primary-light text-xs flex">
                     <Link className="cursor-pointer" href={"/"}>
