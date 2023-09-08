@@ -8,7 +8,7 @@ interface OrderListProps {
 
 const OrderList: React.FC<OrderListProps> = ({ columns, orders }) => {
   return (
-    <div className="flex gap-x-5 mt-5 justify-between">
+    <div className="flex-col gap-y-5 md:gap-y-0 flex md:flex md:flex-row gap-x-5 mt-5 justify-between">
       {columns.map((column) => (
         <Column
           key={column.id}
