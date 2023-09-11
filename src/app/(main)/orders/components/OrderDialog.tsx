@@ -46,7 +46,7 @@ const totalItens = (order: Order) => {
 const OrderDialog = ({ order }: OrderDialogProps) => {
 
     return (
-        <DialogContent className="max-w-md sm:max-w-lg shadow-sm">
+        <DialogContent className="max-w-sm sm:max-w-lg shadow-sm">
             <div className={`p-2 rounded-t-md w-full absolute ${headerCard(order?.status!)}`} />
             <DialogHeader className="mt-3">
                 <DialogTitle className="text-xl font-medium text-white">Pedido - #{order?.id.padStart(5, '0')}</DialogTitle>
@@ -85,9 +85,9 @@ const OrderDialog = ({ order }: OrderDialogProps) => {
                     </p>
                 </div>
                 <DialogFooter className="mt-4">
-                    <div className="flex items-center w-full justify-between">
-                        <div className="flex items-center">
-                            <button type='button' className="bg-white transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border text-black font-medium text-sm rounded-md hover:bg-neutral-200">
+                    <div className="flex flex-col-reverse gap-y-2 sm:gap-0 sm:flex-row items-center w-full justify-between">
+                        <div className="flex items-center w-full sm:w-auto">
+                            <button type='button' className="bg-white w-full sm:w-auto transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 text-xs border text-black font-medium sm:text-sm rounded-md hover:bg-neutral-200">
                                 <Printer
                                     size="20"
                                     className="mr-1"
@@ -97,11 +97,11 @@ const OrderDialog = ({ order }: OrderDialogProps) => {
                                 Imprimir pedido
                             </button>
                         </div>
-                        <div className="flex gap-x-1 items-center">
-                            {order?.status != 'done' && <button type='button' className="bg-transparent transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border border-danger-base text-danger-base font-medium text-sm rounded-md">
+                        <div className="flex sm:flex-row flex-row-reverse sm:w-auto w-full gap-x-1 items-center">
+                            {order?.status != 'done' && <button type='button' className="bg-transparent sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border border-danger-base text-danger-base font-medium text-sm rounded-md">
                                 Cancelar pedido
                             </button>}
-                            <button type='button' className="bg-white transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border text-black font-medium text-sm rounded-md hover:bg-neutral-200">
+                            <button type='button' className="bg-white sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border text-black font-medium text-sm rounded-md hover:bg-neutral-200">
                                 {nextStep(order?.status!)}
                             </button>
                         </div>
