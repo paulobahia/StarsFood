@@ -60,7 +60,7 @@ const OrderDialog = ({ order }: OrderDialogProps) => {
             <div className="flex-col flex gap-y-2">
                 {order?.itens.map((item, index) => {
                     return (
-                        <div className="w-full gap-x-2 h-full flex bg-backgrounds-secondary p-3 rounded-md shadow-sm">
+                        <div key={index} className="w-full gap-x-2 h-full flex bg-backgrounds-secondary p-3 rounded-md shadow-sm">
                             <div>
                                 <img className='w-12 h-12' src={item.imagePath.src} alt="Imagem do Garçom" />
                             </div>
