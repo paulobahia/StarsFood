@@ -1,9 +1,14 @@
 "use client"
 
 import { useState } from "react";
-import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import OrderList from "./components/OrderList";
-
+import WaiterOlivia from '../../assets/waiter1.png'
+import WaiterJackson from '../../assets/waiter2.png'
+import WaiterWilliam from '../../assets/waiter3.png'
+import Item1 from '../../assets/item1.png'
+import Item2 from '../../assets/item2.png'
+import Item3 from '../../assets/item3.png'
 
 export default function Orders() {
 
@@ -14,13 +19,13 @@ export default function Orders() {
     ];
 
     const initialOrders: Order[] = [
-        { id: '0', title: 'Pedido - #00129', status: 'todo' },
-        { id: '1', title: 'Pedido - #00128', status: 'inProgress' },
-        { id: '2', title: 'Pedido - #00127', status: 'inProgress' },
-        { id: '3', title: 'Pedido - #00123', status: 'done' },
-        { id: '4', title: 'Pedido - #00122', status: 'done' },
-        { id: '5', title: 'Pedido - #00121', status: 'done' },
-        { id: '6', title: 'Pedido - #00126', status: 'done' },
+        { id: '0', title: 'Pedido - #00129', waiterName: 'Olivia Martin', waiterAvatar: WaiterOlivia, itens: [{ name: 'Suco de Laranaja', imagePath: Item1, price: 8.00, quantity: 2 }, { name: 'Batata Frita - 500g', imagePath: Item2, price: 18.00, quantity: 1 }, { name: 'Magnífico Burguer', imagePath: Item3, price: 29.99, quantity: 2 }], orderTime: "2023-09-08T18:30:00", table: '005', status: 'todo' },
+        { id: '1', title: 'Pedido - #00128', waiterName: 'Jackson Lee', waiterAvatar: WaiterJackson, itens: [{ name: 'Suco de Laranaja', imagePath: Item1, price: 8.00, quantity: 2 }, { name: 'Batata Frita - 500g', imagePath: Item2, price: 18.00, quantity: 1 }, { name: 'Magnífico Burguer', imagePath: Item3, price: 29.99, quantity: 2 }], orderTime: "2023-09-08T18:30:00", table: '008', status: 'inProgress' },
+        { id: '2', title: 'Pedido - #00127', waiterName: 'William Kim', waiterAvatar: WaiterWilliam, itens: [{ name: 'Suco de Laranaja', imagePath: Item1, price: 8.00, quantity: 2 }, { name: 'Batata Frita - 500g', imagePath: Item2, price: 18.00, quantity: 1 }, { name: 'Magnífico Burguer', imagePath: Item3, price: 29.99, quantity: 2 }], orderTime: "2023-09-08T18:30:00", table: '010', status: 'inProgress' },
+        { id: '3', title: 'Pedido - #00123', waiterName: 'William Kim', waiterAvatar: WaiterWilliam, itens: [{ name: 'Suco de Laranaja', imagePath: Item1, price: 8.00, quantity: 2 }, { name: 'Batata Frita - 500g', imagePath: Item2, price: 18.00, quantity: 1 }, { name: 'Magnífico Burguer', imagePath: Item3, price: 29.99, quantity: 2 }], orderTime: "2023-09-08T18:30:00", table: '012', status: 'done' },
+        { id: '4', title: 'Pedido - #00122', waiterName: 'Olivia Martin', waiterAvatar: WaiterOlivia, itens: [{ name: 'Suco de Laranaja', imagePath: Item1, price: 8.00, quantity: 2 }, { name: 'Batata Frita - 500g', imagePath: Item2, price: 18.00, quantity: 1 }, { name: 'Magnífico Burguer', imagePath: Item3, price: 29.99, quantity: 2 }], orderTime: "2023-09-08T18:30:00", table: '021', status: 'done' },
+        { id: '5', title: 'Pedido - #00121', waiterName: 'Jackson Lee', waiterAvatar: WaiterJackson, itens: [{ name: 'Suco de Laranaja', imagePath: Item1, price: 8.00, quantity: 2 }, { name: 'Batata Frita - 500g', imagePath: Item2, price: 18.00, quantity: 1 }, { name: 'Magnífico Burguer', imagePath: Item3, price: 29.99, quantity: 2 }], orderTime: "2023-09-08T18:30:00", table: '020', status: 'done' },
+        { id: '6', title: 'Pedido - #00126', waiterName: 'William Kim', waiterAvatar: WaiterWilliam, itens: [{ name: 'Suco de Laranaja', imagePath: Item1, price: 8.00, quantity: 2 }, { name: 'Batata Frita - 500g', imagePath: Item2, price: 18.00, quantity: 1 }, { name: 'Magnífico Burguer', imagePath: Item3, price: 29.99, quantity: 2 }], orderTime: "2023-09-08T18:30:00", table: '015', status: 'done' },
     ];
 
     const [state, setState] = useState<AppState>({
@@ -52,7 +57,6 @@ export default function Orders() {
             orders: updatedOrders,
         }));
     };
-
 
     return (
         <main className="text-white">
