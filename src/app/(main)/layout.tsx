@@ -5,12 +5,10 @@ import logo from '../assets/StarsLogo.png'
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import SheetComponent from './components/Sheet'
+
 import {
     Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
     SheetTrigger,
 } from "@/app/components/ui/sheet"
 
@@ -22,9 +20,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <Sheet>
                 <nav className="border-b p-2 px-5 sm:px-10 text-white flex items-center border-primary-light">
                     <div className="flex items-center justify-between gap-x-16">
-                        <SheetTrigger>
+                        <SheetTrigger className="flex sm:hidden">
                             <Image src={logo} alt="Logo" className="w-8" />
                         </SheetTrigger>
+                        <Image src={logo} alt="Logo" className="w-8 hidden sm:flex" />
                         <div className="gap-x-6 hidden sm:flex font-medium w-full text-sm">
                             <p className={pathname.split('/')[1] == 'overview' ? 'text-white' : 'text-primary-light'}>
                                 <Link className="cursor-pointer" href={"/overview"}>
@@ -54,9 +53,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                         </div>
                     </div>
                 </nav>
-                <SheetContent className="">
-                    
-                </SheetContent>
+                <SheetComponent />
             </Sheet>
             <div className="md:p-10 p-5">
                 {children}
