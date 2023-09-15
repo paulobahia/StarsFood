@@ -4,46 +4,52 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
+    DialogClose
 } from "@/app/components/ui/dialog"
 import { Printer } from "iconsax-react"
 
 interface OrderDialogProps {
-    order: Order | null
+    order: Order | null;
+    onMoveOrder: (orderId: string) => void
 }
 
-const headerCard = (type: string) => {
-    switch (type) {
-        case 'todo':
-            return 'bg-danger-base'
-        case 'inProgress':
-            return 'bg-warning-base'
-        case 'done':
-            return 'bg-success-base'
+
+
+const OrderDialog = ({ order, onMoveOrder }: OrderDialogProps) => {
+
+    const headerCard = (type: string) => {
+        switch (type) {
+            case 'todo':
+                return 'bg-danger-base'
+            case 'inProgress':
+                return 'bg-warning-base'
+            case 'done':
+                return 'bg-success-base'
+        }
     }
-}
 
-const nextStep = (status: string) => {
-    switch (status) {
-        case 'todo':
-            return 'Iniciar preparo'
-        case 'inProgress':
-            return 'Finalizar pedido'
-        case 'done':
-            return 'Notificar'
+    const nextStep = (status: string) => {
+        switch (status) {
+            case 'todo':
+                return 'Iniciar preparo'
+            case 'inProgress':
+                return 'Finalizar pedido'
+        }
     }
-}
 
-const totalItens = (order: Order) => {
-    var total = 0
-    if (order) {
-        order.itens.forEach(item => {
-            total += item.price * item.quantity;
-        });
+    const totalItens = (order: Order) => {
+        var total = 0
+        if (order) {
+            order.itens.forEach(item => {
+                total += item.price * item.quantity;
+            });
+        }
+        return total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     }
-    return total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-}
 
-const OrderDialog = ({ order }: OrderDialogProps) => {
+    const moveOrder = (ID: string) => {
+        onMoveOrder(ID)
+    }
 
     return (
         <DialogContent className="max-w-sm sm:max-w-lg shadow-sm">
@@ -101,9 +107,17 @@ const OrderDialog = ({ order }: OrderDialogProps) => {
                             {order?.status != 'done' && <button type='button' className="bg-transparent sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border border-danger-base text-danger-base font-medium text-sm rounded-md">
                                 Cancelar pedido
                             </button>}
-                            <button type='button' className="bg-white sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border text-black font-medium text-sm rounded-md hover:bg-neutral-200">
-                                {nextStep(order?.status!)}
-                            </button>
+                            <DialogClose asChild>
+                                {order?.status != 'done'
+                                    ?
+                                    <button onClick={() => moveOrder(order?.id!)} className="bg-white sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border text-black font-medium text-sm rounded-md hover:bg-neutral-200">
+                                        {nextStep(order?.status!)}
+                                    </button>
+                                    :
+                                    <button className="bg-white sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border text-black font-medium text-sm rounded-md hover:bg-neutral-200">
+                                        Notificar
+                                    </button>}
+                            </DialogClose>
                         </div>
                     </div>
                 </DialogFooter>

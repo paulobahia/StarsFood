@@ -12,9 +12,10 @@ interface ColumnProps {
     id: string;
     title: string;
     orders: Order[];
+    onMoveOrder: (orderId: string) => void
 }
 
-const Column: React.FC<ColumnProps> = ({ id, title, orders }) => {
+const Column: React.FC<ColumnProps> = ({ id, title, orders, onMoveOrder }) => {
     const [order, setOrder] = useState<Order | null>(null);
 
     const headerCard = (type: string) => {
@@ -60,7 +61,7 @@ const Column: React.FC<ColumnProps> = ({ id, title, orders }) => {
                     )}
                 </Droppable>
             </div>
-            <OrderDialog order={order} />
+            <OrderDialog order={order} onMoveOrder={onMoveOrder} />
         </Dialog>
     );
 };

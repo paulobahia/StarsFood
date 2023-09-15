@@ -9,6 +9,7 @@ import WaiterWilliam from '../../assets/waiter3.png'
 import Item1 from '../../assets/item1.png'
 import Item2 from '../../assets/item2.png'
 import Item3 from '../../assets/item3.png'
+import Column from "./components/Column";
 
 export default function Orders() {
 
@@ -58,6 +59,48 @@ export default function Orders() {
         }));
     };
 
+    const onMoveOrderToNextColumn = (orderId: string) => {
+        setState((prevState) => {
+            const { columns, orders } = prevState;
+
+            const orderToMove = orders.find((order) => order.id === orderId);
+
+            if (!orderToMove) {
+                console.error('Pedido não encontrado');
+                return prevState;
+            }
+
+            const currentColumn = columns.find((column) => column.id === orderToMove.status);
+
+            if (!currentColumn) {
+                console.error('Coluna não encontrada');
+                return prevState;
+            }
+
+            const currentIndex = columns.findIndex((column) => column.id === currentColumn.id);
+            const nextColumn = columns[currentIndex + 1];
+
+            if (!nextColumn) {
+                console.error('Não há próxima coluna');
+                return prevState;
+            }
+
+            const updatedOrder = {
+                ...orderToMove,
+                status: nextColumn.id,
+            };
+
+            const updatedOrders = orders.map((order) =>
+                order.id === updatedOrder.id ? updatedOrder : order
+            );
+
+            return {
+                ...prevState,
+                orders: updatedOrders,
+            };
+        });
+    };
+
     return (
         <main className="text-white">
             <div className="flex-col flex justify-center items-center gap-y-4">
@@ -66,7 +109,17 @@ export default function Orders() {
                 </div>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
-                <OrderList columns={state.columns} orders={state.orders} />
+                <OrderList
+                    column={state.columns.map((column) => (
+                        <Column
+                            key={column.id}
+                            id={column.id}
+                            title={column.title}
+                            orders={state.orders.filter((order) => order.status === column.id)}
+                            onMoveOrder={onMoveOrderToNextColumn}
+                        />
+                    ))}
+                />
             </DragDropContext>
         </main >
     )
