@@ -11,11 +11,12 @@ import { Printer } from "iconsax-react"
 interface OrderDialogProps {
     order: Order | null;
     onMoveOrder: (orderId: string) => void
+    onRemoveOrder: (orderId: string) => void
 }
 
 
 
-const OrderDialog = ({ order, onMoveOrder }: OrderDialogProps) => {
+const OrderDialog = ({ order, onMoveOrder, onRemoveOrder }: OrderDialogProps) => {
 
     const headerCard = (type: string) => {
         switch (type) {
@@ -49,6 +50,10 @@ const OrderDialog = ({ order, onMoveOrder }: OrderDialogProps) => {
 
     const moveOrder = (ID: string) => {
         onMoveOrder(ID)
+    }
+
+    const removeOrder = (ID: string) => {
+        onRemoveOrder(ID)
     }
 
     return (
@@ -104,19 +109,26 @@ const OrderDialog = ({ order, onMoveOrder }: OrderDialogProps) => {
                             </button>
                         </div>
                         <div className="flex sm:flex-row flex-row-reverse sm:w-auto w-full gap-x-1 items-center">
-                            {order?.status != 'done' && <button type='button' className="bg-transparent sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border border-danger-base text-danger-base font-medium text-sm rounded-md">
-                                Cancelar pedido
-                            </button>}
-                            <DialogClose asChild>
-                                {order?.status != 'done'
-                                    ?
-                                    <button onClick={() => moveOrder(order?.id!)} className="bg-white sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border text-black font-medium text-sm rounded-md hover:bg-neutral-200">
-                                        {nextStep(order?.status!)}
+                            {
+                                order?.status != 'done' &&
+                                <DialogClose asChild>
+                                    <button onClick={() => removeOrder(order?.id!)} className="bg-transparent sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border border-danger-base text-danger-base font-medium text-sm rounded-md">
+                                        Cancelar pedido
                                     </button>
-                                    :
-                                    <button className="bg-white sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border text-black font-medium text-sm rounded-md hover:bg-neutral-200">
-                                        Notificar
-                                    </button>}
+                                </DialogClose>
+                            }
+                            <DialogClose asChild>
+                                {
+                                    order?.status != 'done'
+                                        ?
+                                        <button onClick={() => moveOrder(order?.id!)} className="bg-white sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border text-black font-medium text-sm rounded-md hover:bg-neutral-200">
+                                            {nextStep(order?.status!)}
+                                        </button>
+                                        :
+                                        <button className="bg-white sm:w-auto w-full transition-colors items-center flex justify-center ease-in-out py-1.5 px-3 border text-black font-medium text-sm rounded-md hover:bg-neutral-200">
+                                            Notificar
+                                        </button>
+                                }
                             </DialogClose>
                         </div>
                     </div>

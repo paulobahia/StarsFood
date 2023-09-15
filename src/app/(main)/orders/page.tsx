@@ -101,6 +101,26 @@ export default function Orders() {
         });
     };
 
+    const onRemoveOrderToColumn = (orderId: string) => {
+        setState((prevState) => {
+            const { orders } = prevState;
+
+            const orderToRemove = orders.find((order) => order.id === orderId);
+
+            if (!orderToRemove) {
+                console.error('Pedido não encontrado');
+                return prevState;
+            }
+
+            const updatedOrders = orders.filter((order) => order.id !== orderId);
+
+            return {
+                ...prevState,
+                orders: updatedOrders,
+            };
+        });
+    }
+
     return (
         <main className="text-white">
             <div className="flex-col flex justify-center items-center gap-y-4">
@@ -117,6 +137,7 @@ export default function Orders() {
                             title={column.title}
                             orders={state.orders.filter((order) => order.status === column.id)}
                             onMoveOrder={onMoveOrderToNextColumn}
+                            onRemoveOrder={onRemoveOrderToColumn}
                         />
                     ))}
                 />
