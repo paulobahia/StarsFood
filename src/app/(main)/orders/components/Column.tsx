@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import Order from './Order';
 import OrderDialog from './OrderDialog';
@@ -18,6 +18,17 @@ interface ColumnProps {
 
 const Column: React.FC<ColumnProps> = ({ id, title, orders, onMoveOrder, onRemoveOrder }) => {
     const [order, setOrder] = useState<Order | null>(null);
+    const [sortedOrders, setSortedOrders] = useState<Order[]>([]);
+
+    useEffect(() => {
+        const sorted = [...orders];
+        sorted.sort((a, b) => {
+            const dateA = new Date(a.orderTime) as any;
+            const dateB = new Date(b.orderTime) as any;
+            return dateA - dateB;
+        });
+        setSortedOrders(sorted);
+    }, [orders]);
 
     const headerCard = (type: string) => {
         switch (type) {
@@ -49,7 +60,7 @@ const Column: React.FC<ColumnProps> = ({ id, title, orders, onMoveOrder, onRemov
                     {(provided) => (
                         <div className="w-full overflow-auto h-screen flex flex-col gap-y-3 px-3 bg-backgrounds-secondary rounded-b-md" ref={provided.innerRef} {...provided.droppableProps}>
                             <div className='mt-6 flex flex-col gap-x-3 gap-y-3'>
-                                {orders.map((order, index) => (
+                                {sortedOrders.map((order, index) => (
                                     <DialogTrigger onClick={() => showOrder(order)} key={order.id}>
                                         <div className='shadow-md'>
                                             <Order order={order} index={index} type={title} />
