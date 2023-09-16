@@ -1,6 +1,6 @@
 "use client"
 
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
+import { createColumnHelper } from "@tanstack/react-table"
 
 import TableCell from "./table-cell"
 import EditCell from "./edit-cell"

@@ -48,6 +48,10 @@ const OrderDialog = ({ order, onMoveOrder, onRemoveOrder }: OrderDialogProps) =>
         return total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     }
 
+    const convertToLocalCurrent = (value: number) => {
+        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    }
+
     const moveOrder = (ID: string) => {
         onMoveOrder(ID)
     }
@@ -81,7 +85,7 @@ const OrderDialog = ({ order, onMoveOrder, onRemoveOrder }: OrderDialogProps) =>
                                     <p className="text-white font-medium text-sm">{item.name}</p>
                                 </div>
                                 <div>
-                                    <p className="text-primary-secundary/60 font-normal text-sm">R$ {item.price}</p>
+                                    <p className="text-primary-secundary/60 font-normal text-sm">{convertToLocalCurrent(item.price)}</p>
                                 </div>
                             </div>
                         </div>

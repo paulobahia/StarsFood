@@ -2,17 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/app/components/ui/dropdown-menu"
 import { Button } from "@/app/components/ui/button"
 
-import { Edit } from "lucide-react"
+import { Pencil } from "lucide-react"
 
 export type Products = {
   id: string
@@ -61,7 +53,7 @@ export const columns: ColumnDef<Products>[] = [
         <div className="flex justify-center items-center">
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Abrir Menu</span>
-            <Edit className="h-4 w-4" />
+            <Pencil className="h-4 w-4 text-white" />
           </Button>
         </div>
       )

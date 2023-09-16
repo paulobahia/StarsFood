@@ -31,7 +31,7 @@ const InfoProducts = ({ setProductName, productName, variations, register, error
                     <span className="text-sm font-medium">Nome</span>
                     <input readOnly={variations.length > 0} {...register('name')} name='name' onChange={(e) => setProductName(e.target.value)} placeholder="Porção de mandioca" className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-md read-only:border-dashed read-only:border read-only:outline-none" />
                     {errors.name && productName == '' && <span className='text-danger-base w-full text-xs font-semibold'>{errors.name.message}</span>}
-                    {variations.length > 0 && <span className={`absolute mb-8 rounded-t-lg rounded-br-lg text-xs font-medium scale-0 bg-gray-50 -top-2 left-14 p-2 text-zinc-800 group-hover:scale-100`}>Remova as variações para alterar no nome do produto</span>}
+                    {variations.length > 0 && <span className={`absolute mb-8 rounded-t-lg rounded-br-lg text-xs font-medium scale-0 bg-gray-50 -top-2 left-14 p-2 text-zinc-800 group-hover:scale-100`}>Remova as variações para alterar o nome do produto</span>}
                 </div>
                 <div className="flex w-full justify-between gap-x-4 items-center">
                     <div className="flex flex-col gap-y-2 w-full">
