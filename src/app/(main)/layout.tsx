@@ -12,8 +12,14 @@ import {
     SheetTrigger,
 } from "@/app/components/ui/sheet"
 
+import {
+    NavigationMenu,
+} from "@/app/components/ui/navigation-menu"
+import { NavigationMenuOrder as NavigationOrder } from "./components/NavigationMenuOrder";
+
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
+    const pathSplited = pathname.split('/')[1]
 
     return (
         <main>
@@ -24,33 +30,24 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                             <Image src={logo} alt="Logo" className="w-8" />
                         </SheetTrigger>
                         <Image src={logo} alt="Logo" className="w-8 hidden sm:flex" />
-                        <div className="gap-x-6 hidden sm:flex font-medium w-full text-sm">
-                            <p className={pathname.split('/')[1] == 'overview' ? 'text-white' : 'text-primary-light'}>
+                        <NavigationMenu className="gap-x-6 hidden sm:flex font-medium w-full text-sm">
+                            <p className={pathSplited == 'overview' ? 'text-white' : 'text-primary-light'}>
                                 <Link className="cursor-pointer" href={"/overview"}>
                                     Overview
                                 </Link>
                             </p>
-                            <p className={pathname.split('/')[1] == 'orders' ? 'text-white' : 'text-primary-light'}>
-                                <Link className="cursor-pointer" href={"/orders"}>
-                                    Pedidos
-                                </Link>
-                            </p>
-                            <p className={pathname.split('/')[1] == 'products' ? 'text-white' : 'text-primary-light'}>
+                            <NavigationOrder />
+                            <p className={pathSplited == 'products' ? 'text-white' : 'text-primary-light'}>
                                 <Link className="cursor-pointer" href={"/products"}>
                                     Produtos
                                 </Link>
                             </p>
-                            <p className={pathname.split('/')[1] == 'commands' ? 'text-white' : 'text-primary-light'}>
-                                <Link className="cursor-pointer" href={"/commands"}>
-                                    Comandas
-                                </Link>
-                            </p>
-                            <p className={pathname.split('/')[1] == 'settings' ? 'text-white' : 'text-primary-light'}>
+                            <p className={pathSplited == 'settings' ? 'text-white' : 'text-primary-light'}>
                                 <Link className="cursor-pointer" href={"/settings"}>
                                     Configurações
                                 </Link>
                             </p>
-                        </div>
+                        </NavigationMenu>
                     </div>
                 </nav>
                 <SheetComponent />
