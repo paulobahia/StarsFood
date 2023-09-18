@@ -45,7 +45,7 @@ const NavigationMenuOrder = () => {
                                     Finalizar Comanda
                                 </div>
                                 <p className="line-clamp-2 text-sm font-normal leading-snug text-muted-foreground">
-                                    Com a comanda em mão escanei/digite o código contido nela, com isso sera possivel realizar o fechamento da comanda.
+                                Com a comanda em mãos, escaneie/digite o código contido nela, com isso será possível realizar o fechamento da comanda.
                                 </p>
                             </div>
                         </Link>
