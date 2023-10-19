@@ -39,11 +39,6 @@ const InfoProducts = ({ setProductName, productName, variations, register, error
                         <input {...register('category')} name='category' placeholder="Acompanhamento" className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-md" />
                         {errors.category && <span className='text-danger-base w-full text-xs font-semibold'>{errors.category.message}</span>}
                     </div>
-                    <div className="flex flex-col gap-y-2 w-full">
-                        <span className="text-sm font-medium">Tipo</span>
-                        <input {...register('type')} name='type' placeholder="Porção" className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-md" />
-                        {errors.type && <span className='text-danger-base w-full text-xs font-semibold'>{errors.type.message}</span>}
-                    </div>
                 </div>
                 <div className="flex-col sm:flexl w-full justify-between gap-x-4">
                     <div className="flex flex-col gap-y-2 w-full mt-2">

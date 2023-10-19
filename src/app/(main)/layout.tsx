@@ -16,6 +16,7 @@ import {
     NavigationMenu,
 } from "@/app/components/ui/navigation-menu"
 import { NavigationMenuOrder as NavigationOrder } from "./components/NavigationMenuOrder";
+import { NavigationMenuProducts as NavigationProduct } from "./components/NavigationMenuProducts";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
@@ -37,11 +38,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                                 </Link>
                             </p>
                             <NavigationOrder />
-                            <p className={pathSplited == 'products' ? 'text-white' : 'text-primary-light'}>
-                                <Link className="cursor-pointer" href={"/products"}>
-                                    Produtos
-                                </Link>
-                            </p>
+                            <NavigationProduct/>
                             <p className={pathSplited == 'settings' ? 'text-white' : 'text-primary-light'}>
                                 <Link className="cursor-pointer" href={"/settings"}>
                                     Configurações
