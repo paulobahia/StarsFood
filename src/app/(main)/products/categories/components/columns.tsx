@@ -4,9 +4,9 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { Button } from "@/app/components/ui/button"
 
-import { MoreVertical } from "lucide-react"
 import { Badge } from "@/app/components/ui/badge"
 import { DataTableColumnHeader } from "./data-table-column-header"
+import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 
 export type Categories = {
   id: string
@@ -53,9 +53,9 @@ export const columns: ColumnDef<Categories>[] = [
     cell: ({ row }) => {
 
       return (
-        <div className="flex justify-end items-end">
+        <div className="flex justify-center items-center">
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <MoreVertical className="h-4 w-4 text-white" />
+            <DotsHorizontalIcon className="h-4 w-4" />
           </Button>
         </div>
       )

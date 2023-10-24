@@ -4,8 +4,8 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { Button } from "@/app/components/ui/button"
 
-import { MoreVertical } from "lucide-react"
 import { Badge } from "@/app/components/ui/badge"
+import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 
 export const columns: ColumnDef<Invoices>[] = [
   {
@@ -45,7 +45,7 @@ export const columns: ColumnDef<Invoices>[] = [
       return (
         <div className="flex justify-center items-center">
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <MoreVertical className="h-4 w-4 text-white" />
+            <DotsHorizontalIcon className="h-4 w-4" />
           </Button>
         </div>
       )
