@@ -6,11 +6,12 @@ import { Button } from "@/app/components/ui/button"
 
 import { MoreVertical } from "lucide-react"
 import { Badge } from "@/app/components/ui/badge"
+import { DataTableColumnHeader } from "./data-table-column-header"
 
 export type Categories = {
   id: string
   name: string
-  isAvailable: boolean
+  isAvailable: string
 }
 
 export const columns: ColumnDef<Categories>[] = [
@@ -20,25 +21,32 @@ export const columns: ColumnDef<Categories>[] = [
   },
   {
     accessorKey: "name",
-    header: "Categoria",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Categoria" />
+    ),
     cell: ({ row }) => <div>{row.getValue("name")}</div>,
   },
   {
     accessorKey: "isAvailable",
-    header: ({ column }) => (<div className="flex justify-center">Status</div>),
+    header: ({ column }) => (
+      <DataTableColumnHeader className="flex justify-center" column={column} title="Status" />
+    ),
     cell: ({ row }) => {
       return (
-        row.getValue("isAvailable")
+        row.getValue("isAvailable") == 'active'
           ?
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center mr-7">
             <Badge className="rounded-md" variant='outline'>Ativo</Badge>
           </div>
           :
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center mr-7">
             <Badge className="rounded-md" variant='outline'>Inativo</Badge>
           </div>
       )
-    }
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
   },
   {
     id: "actions",

@@ -2,28 +2,55 @@
 
 import { Table } from "@tanstack/react-table"
 import { Input } from "@/app/components/ui/input"
-import { SearchNormal1 } from "iconsax-react"
+import { DataTableViewOptions } from "./data-table-view-options"
+import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+import { Circle, CircleOff, CheckCircle } from "lucide-react"
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>
 }
 
+export const statuses = [
+    {
+        value: "Aberto",
+        label: "Aberto",
+        icon: Circle,
+    },
+    {
+        value: "Cancelado",
+        label: "Cancelado",
+        icon: CircleOff,
+    },
+    {
+        value: "Pagamento Realizado",
+        label: "Pagamento Realizado",
+        icon: CheckCircle,
+    },
+]
+
 export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
 
     return (
-        <div className="flex p-6 justify-between items-center">
-            <div className="w-full max-w-[220px] sm:max-w-[250px] flex items-center">
+        <div className="flex py-5 px-3 justify-between items-center">
+            <div className="w-full max-w-[220px] sm:max-w-[250px] flex items-center gap-x-2">
                 <Input
                     placeholder="Pesquise pelo funcionário"
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
                     }
-                    className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-l-md"
+                    className="h-8 w-[150px] lg:w-[250px] placeholder:text-primary-secundary placeholder:text-xs text-sm rounded-md text-white"
                 />
-                <button className="border-y border-r border-primary-light rounded-r-md p-2 hover:bg-slate-200/10" >
-                    <SearchNormal1 size="22" color="#fff" />
-                </button>
+                {table.getColumn("isAvailable") && (
+                    <DataTableFacetedFilter
+                        column={table.getColumn("isAvailable")}
+                        title="Status"
+                        options={statuses}
+                    />
+                )}
+            </div>
+            <div className="flex items-center gap-x-3">
+                <DataTableViewOptions table={table} />
             </div>
         </div>
     )

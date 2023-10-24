@@ -5,32 +5,32 @@ const Fakedata: Categories[] = [
     {
         id: "#003",
         name: "Acompanhamentos",
-        isAvailable: true
+        isAvailable: 'active'
     },
     {
         id: "#010",
         name: "Bebidas",
-        isAvailable: true
+        isAvailable: 'active'
     },
     {
         id: "#025",
         name: "Carnes Principais",
-        isAvailable: true
+        isAvailable: 'active'
     },
     {
         id: "#042",
         name: "Saladas",
-        isAvailable: false
+        isAvailable: 'inactive'
     },
     {
         id: "#068",
         name: "Sobremesas",
-        isAvailable: true
+        isAvailable: 'active'
     },
     {
         id: "#089",
         name: "Hambúrgueres",
-        isAvailable: false
+        isAvailable: 'inactive'
     },
 ]
 

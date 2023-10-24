@@ -14,6 +14,14 @@ type Order = {
     itens: ItensOrder[];
 };
 
+type Invoices = {
+    id: string
+    name: string
+    createdAt: string
+    isAvailable: string
+    amount: string
+}
+
 type ItensOrder = {
     name: string;
     imagePath: any; // TODO: Alterar para a tipagem correta

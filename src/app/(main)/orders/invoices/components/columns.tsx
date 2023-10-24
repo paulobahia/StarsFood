@@ -7,28 +7,23 @@ import { Button } from "@/app/components/ui/button"
 import { MoreVertical } from "lucide-react"
 import { Badge } from "@/app/components/ui/badge"
 
-export type Invoices = {
-  id: string
-  name: string
-  createdAt: string
-  status: string
-  amount: string
-}
-
 export const columns: ColumnDef<Invoices>[] = [
   {
     accessorKey: "id",
     header: "ID",
-    cell: ({ row }) => <div className="w-[100px]">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "status",
+    accessorKey: "isAvailable",
     header: "Status",
     cell: ({ row }) => {
       return (
-        <Badge className="rounded-md" variant='outline'>{row.getValue("status")}</Badge>
+        <Badge className="rounded-md" variant='outline'>{row.getValue("isAvailable")}</Badge>
       )
-    }
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
   },
   {
     accessorKey: "createdAt",

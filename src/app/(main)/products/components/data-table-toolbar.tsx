@@ -3,17 +3,19 @@
 import { Table } from "@tanstack/react-table"
 import { useRouter } from 'next/navigation'
 import { Input } from "@/app/components/ui/input"
-import { SearchNormal1 } from "iconsax-react"
+import { Button } from "@/app/components/ui/button"
 import { Plus } from "lucide-react"
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>
 }
 
+import { DataTableViewOptions } from "./data-table-view-options"
+
 export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
     const router = useRouter()
     return (
-        <div className="flex p-6 justify-between items-center">
+        <div className="flex py-5 px-3 justify-between items-center">
             <div className="w-full max-w-[220px] sm:max-w-[250px] flex items-center">
                 <Input
                     placeholder="Pesquise por produto"
@@ -21,21 +23,24 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
                     }
-                    className="flex placeholder:text-primary-secundary placeholder:text-xs w-full p-2 bg-transparent border text-sm border-primary-light text-white rounded-l-md"
+                    className="h-8 w-[150px] lg:w-[250px] placeholder:text-primary-secundary placeholder:text-xs text-sm rounded-md text-white"
                 />
-                <button className="border-y border-r border-primary-light rounded-r-md p-2 hover:bg-slate-200/10" >
-                    <SearchNormal1 size="22" color="#fff" />
-                </button>
             </div>
-            <div>
-                <button onClick={() => router.push('/products/add-products')} className="bg-white transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full sm:py-2 sm:px-5 p-1 font-semibold border text-black text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
+            <div className="flex items-center gap-x-3">
+                <DataTableViewOptions table={table} />
+                <Button
+                    onClick={() => router.push('/products/add-products')}
+                    variant="default"
+                    size="sm"
+                    className="ml-auto py-2 hidden h-8 lg:flex border border-primary-light"
+                >
                     <span className="sm:flex hidden">
                         Adicionar Produto
                     </span>
                     <span>
                         <Plus className="flex sm:hidden" />
                     </span>
-                </button>
+                </Button>
             </div>
         </div>
     )
