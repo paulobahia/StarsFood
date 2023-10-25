@@ -53,8 +53,8 @@ export function DataTableColumnHeader<TData, TValue>({
                         <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                         Decrescente
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
+                    <DropdownMenuSeparator className="hidden sm:flex" />
+                    <DropdownMenuItem className="hidden sm:flex" onClick={() => column.toggleVisibility(false)}>
                         <EyeNoneIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                         Ocultar
                     </DropdownMenuItem>

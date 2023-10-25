@@ -6,6 +6,8 @@ import { Button } from "@/app/components/ui/button"
 
 import { Badge } from "@/app/components/ui/badge"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
+import { DataTableColumnHeader } from "./data-table-column-header"
+import { DataTableRowActions } from "./data-table-row-actions"
 
 export const columns: ColumnDef<Invoices>[] = [
   {
@@ -15,10 +17,12 @@ export const columns: ColumnDef<Invoices>[] = [
   },
   {
     accessorKey: "isAvailable",
-    header: "Status",
+    header: ({ column }) => (
+      <DataTableColumnHeader className="min-w-max" column={column} title="Status" />
+    ),
     cell: ({ row }) => {
       return (
-        <Badge className="rounded-md" variant='outline'>{row.getValue("isAvailable")}</Badge>
+        <Badge className="rounded-md min-w-max" variant='outline'>{row.getValue("isAvailable")}</Badge>
       )
     },
     filterFn: (row, id, value) => {
@@ -27,28 +31,25 @@ export const columns: ColumnDef<Invoices>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "Data",
+    header: ({ column }) => (<div className="flex min-w-max">Data</div>),
+    cell: ({ row }) => <div className="flex min-w-max">{row.getValue("createdAt")}</div>,
   },
   {
     accessorKey: "name",
-    header: "Nome",
+    header: ({ column }) => (
+      <DataTableColumnHeader className="min-w-max" column={column} title="Nome" />
+    ),
+    cell: ({ row }) => <div className="flex min-w-max">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "amount",
-    header: ({ column }) => (<div className="flex justify-center">Total</div>),
-    cell: ({ row }) => <div className="flex justify-center">{row.getValue("amount")}</div>,
+    header: ({ column }) => (
+      <DataTableColumnHeader className="flex justify-center min-w-max" column={column} title="Total" />
+    ),
+    cell: ({ row }) => <div className="flex justify-center min-w-max">{row.getValue("amount")}</div>,
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-
-      return (
-        <div className="flex justify-center items-center">
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <DotsHorizontalIcon className="h-4 w-4" />
-          </Button>
-        </div>
-      )
-    },
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   }
 ]

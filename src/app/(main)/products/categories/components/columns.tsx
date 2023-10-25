@@ -7,6 +7,7 @@ import { Button } from "@/app/components/ui/button"
 import { Badge } from "@/app/components/ui/badge"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
+import { DataTableRowActions } from "./data-table-row-actions"
 
 export type Categories = {
   id: string
@@ -22,24 +23,24 @@ export const columns: ColumnDef<Categories>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Categoria" />
+      <DataTableColumnHeader className="min-w-max" column={column} title="Categoria" />
     ),
-    cell: ({ row }) => <div>{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="flex min-w-max">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "isAvailable",
     header: ({ column }) => (
-      <DataTableColumnHeader className="flex justify-center" column={column} title="Status" />
+      <DataTableColumnHeader className="flex justify-center min-w-max" column={column} title="Status" />
     ),
     cell: ({ row }) => {
       return (
         row.getValue("isAvailable") == 'active'
           ?
-          <div className="flex justify-center items-center mr-7">
+          <div className="flex justify-center items-center mr-7 min-w-max">
             <Badge className="rounded-md" variant='outline'>Ativo</Badge>
           </div>
           :
-          <div className="flex justify-center items-center mr-7">
+          <div className="flex justify-center items-center mr-7 min-w-max">
             <Badge className="rounded-md" variant='outline'>Inativo</Badge>
           </div>
       )
@@ -50,15 +51,6 @@ export const columns: ColumnDef<Categories>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-
-      return (
-        <div className="flex justify-center items-center">
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <DotsHorizontalIcon className="h-4 w-4" />
-          </Button>
-        </div>
-      )
-    },
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   }
 ]
