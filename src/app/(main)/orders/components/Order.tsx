@@ -1,4 +1,4 @@
-import formatarData from '@/utils/methods';
+import { formatarData } from '@/utils/methods';
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 

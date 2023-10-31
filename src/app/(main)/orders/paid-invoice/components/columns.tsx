@@ -1,5 +1,6 @@
 "use client"
 
+import { amountProduct } from "@/utils/methods"
 import { ColumnDef } from "@tanstack/react-table"
 
 export type ProductsInvoice = {
@@ -7,12 +8,7 @@ export type ProductsInvoice = {
   productName: string
   quantity: number
   price: string
-}
-
-const amountProduct = (price: string, quantity: string) => {
-  const parsePrice = parseFloat(price.replace('R$', '').replace(',', '.'));
-  const amount = parsePrice * parseFloat(quantity)
-  return amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+  category: string
 }
 
 export const columns: ColumnDef<ProductsInvoice>[] = [
