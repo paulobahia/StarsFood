@@ -152,7 +152,7 @@ export default function PaidInvoice() {
             <SheetTrigger asChild className="absolute right-3 top-1/2 cursor-pointer">
                 <ArrowCircleLeft size="40" color="#d9e3f0" variant="Bold" />
             </SheetTrigger>
-            <SheetContent side={"right"} className="w-[22%] sm:max-w-none py-10 px-5">
+            <SheetContent side={"right"} className="w-[450px] sm:max-w-none py-10 px-5">
                 <div className="pb-4 text-3xl font-normal">
                     Finalizar Pedido
                 </div>
