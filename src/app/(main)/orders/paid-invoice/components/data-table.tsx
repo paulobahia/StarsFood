@@ -24,6 +24,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/app/components/ui/table"
+import { DataTablePagination } from "./data-table-pagination"
 
 
 interface DataTableProps<TData, TValue> {
@@ -51,6 +52,11 @@ export function DataTable<TData, TValue>({
             columnVisibility,
             rowSelection,
             columnFilters,
+        },
+        initialState: {
+            pagination: {
+                pageSize: 6
+            }
         },
         enableRowSelection: true,
         onRowSelectionChange: setRowSelection,
@@ -117,6 +123,9 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
+            {data.length >= 7 &&
+                < DataTablePagination table={table} />
+            }
         </div>
     )
 }

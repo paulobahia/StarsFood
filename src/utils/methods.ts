@@ -1,3 +1,5 @@
+import { ProductsInvoice } from "@/app/(main)/orders/paid-invoice/components/columns";
+
 export function formatarData(dataString: string) {
     const data = new Date(dataString);
     const dia = data.getDate().toString().padStart(2, '0');
@@ -14,3 +16,13 @@ export function amountProduct(price: string, quantity: string) {
     return amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 }
 
+export function amountOrder(products: ProductsInvoice[]) {
+
+    const total = products.reduce((accumulator, product) => {
+        const price = parseFloat(product.price.replace('R$', '').replace(',', '.'));
+        const subtotal = price * product.quantity;
+        return accumulator + subtotal;
+    }, 0);
+
+    return total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
