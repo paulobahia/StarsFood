@@ -18,9 +18,9 @@ const SheetInvoice: React.FC<SheetInvoiceProps> = ({ data }) => {
                 Finalizar Pedido
             </div>
             <div className="flex flex-1 flex-col gap-y-5 h-[60%] w-full bg-[#1e1e21] rounded-t-xl p-5 overflow-auto">
-                {data.map((item) =>
+                {data.map((item, index) =>
                 (
-                    <div key={item.id} className="flex items-center justify-between">
+                    <div key={index} className="flex items-center justify-between">
                         <div className="flex gap-x-3 items-center">
                             <div className="bg-primary w-8 h-8 flex justify-center items-center rounded-full">
                                 <div className="text-black text-lg font-semibold">
@@ -92,7 +92,7 @@ const SheetInvoice: React.FC<SheetInvoiceProps> = ({ data }) => {
                     <Card size="45" color="#555555" variant="Bulk" />
                     <div className="text-xs font-normal text-primary-light">Cartão</div>
                 </div>
-                <DialogSplit data={data} />
+                <DialogSplit Invoicedata={data} />
             </div>
         </SheetContent>
     )
