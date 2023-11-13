@@ -1,8 +1,8 @@
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
 import { DocumentDownload, Edit, Share } from "iconsax-react";
-import { DataTable } from "./components/data-table";
-import { ProductsInvoice, columns } from "./components/columns";
+import { DataTable } from "./components/PaidInvoiceTable/data-table";
+import { columns } from "./components/PaidInvoiceTable/columns";
 
 import { Sheet, SheetTrigger } from "@/app/components/ui/sheet"
 

@@ -5,8 +5,6 @@ import DialogSplit from "./components/DialogSplit"
 
 import { amountOrder, amountProduct } from "@/utils/methods"
 
-import { ProductsInvoice } from "../columns"
-
 type SheetInvoiceProps = {
     data: ProductsInvoice[]
 }

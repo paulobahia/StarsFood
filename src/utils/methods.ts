@@ -1,4 +1,4 @@
-import { ProductsInvoice } from "@/app/(main)/orders/paid-invoice/components/columns";
+import { ProductsInvoice } from "@/app/(main)/orders/paid-invoice/components/PaidInvoiceTable/columns";
 
 export function formatarData(dataString: string) {
     const data = new Date(dataString);

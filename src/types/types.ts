@@ -1,3 +1,4 @@
+
 type ColumnData = {
     id: string;
     title: string;
@@ -33,3 +34,17 @@ type AppState = {
     columns: ColumnData[];
     orders: Order[];
 };
+
+type ProductsInvoice = {
+    id: string
+    productName: string
+    quantity: number
+    price: string
+    category: string
+}
+
+type Person = {
+    id: number,
+    name: string,
+    products: ProductsInvoice[]
+}

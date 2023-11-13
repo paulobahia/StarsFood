@@ -1,35 +1,12 @@
 "use client"
+
 import { Button } from "@/app/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/app/components/ui/dialog"
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/app/components/ui/accordion"
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/app/components/ui/alert-dialog"
 
 import { Card, Moneys, Profile2User } from "iconsax-react"
 import { useMemo, useState } from "react"
-import { ProductsInvoice } from "../../../columns"
 import { amountOrder, amountProduct } from "@/utils/methods"
-import { X, Minus } from "lucide-react"
-
-type Person = {
-    id: number,
-    name: string,
-    products: ProductsInvoice[]
-}
+import AccordionInvoice from "./components/AccordionInvoice"
 
 type DialogSplitProps = {
     Invoicedata: ProductsInvoice[]
@@ -37,7 +14,9 @@ type DialogSplitProps = {
 
 const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
 
+    const amount = useMemo(() => amountOrder(Invoicedata), [Invoicedata]);
     const [data, setData] = useState<ProductsInvoice[]>([...Invoicedata])
+    const [isActiveBtn, setIsActiveBtn] = useState<boolean>(false)
     const [persons, setPerson] = useState<Person[]>([
         {
             id: 1,
@@ -51,7 +30,6 @@ const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
         },
     ])
     const [selectedPerson, setSelectedPerson] = useState<Person>()
-    const amount = useMemo(() => amountOrder(Invoicedata), [Invoicedata]);
     const [dataCopy, setDataCopy] = useState<ProductsInvoice[]>()
 
     const addNewPerson = () => {
@@ -64,11 +42,6 @@ const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
         };
 
         setPerson([...persons, newPerson]);
-    };
-
-    const removePerson = (id: number) => {
-        const updatedPersons = persons.filter(person => person.id !== id);
-        setPerson(updatedPersons);
     };
 
     const selectProduct = (product: ProductsInvoice) => {
@@ -95,98 +68,12 @@ const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
         }
     }
 
-    const decrementPersonProduct = (product: ProductsInvoice, personId: number) => {
-        setPerson(prevPersons => {
-            return prevPersons.map(person => {
-                if (person.id === personId) {
-                    const updatedPerson = { ...person };
-                    const productIndex = updatedPerson.products.findIndex(p => p.id === product.id);
+    const amountPaid = () => {
 
-                    if (productIndex !== -1) {
-                        if (updatedPerson.products[productIndex].quantity > 1) {
-                            updatedPerson.products[productIndex].quantity -= 1;
-                        } else {
-                            updatedPerson.products.splice(productIndex, 1);
-                        }
-                        const dataProduct = data.find(p => p.id === product.id);
+        let totalOrder = parseFloat(amountOrder(data).replace('R$', '').replace(',', '.'))
+        let totalReplace = parseFloat(amount.replace('R$', '').replace(',', '.'))
 
-                        if (dataProduct) {
-                            dataProduct.quantity += 1;
-                        }
-                    }
-
-                    return updatedPerson;
-                }
-                return person;
-            });
-        });
-    };
-
-    const cancelDivision = () => {
-        const updateData = data.map((item) => {
-            const matchingItem = dataCopy!.find((copyItem) => copyItem.id === item.id);
-            if (matchingItem) {
-                return {
-                    ...item,
-                    quantity: matchingItem.quantity,
-                };
-            } else {
-                return item;
-            }
-        });
-
-        const updatePersons = persons.map((item) => {
-            return {
-                ...item,
-                products: []
-            }
-        });
-
-        setPerson(updatePersons)
-        setData(updateData)
-    }
-
-    const amountPaid = (persons: Person[]) => {
-        let totalSum = 0;
-
-        persons.forEach(person => {
-            person.products.forEach(product => {
-                const parsePrice = parseFloat(product.price.replace('R$', '').replace(',', '.'));
-                const partialSum = parsePrice * product.quantity;
-                totalSum += partialSum;
-            });
-        });
-
-        return totalSum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-
-    const amountRemaining = (persons: Person[]) => {
-
-        let totalSum = 0;
-
-        const total = parseFloat(amount.replace('R$', '').replace(',', '.'))
-
-        persons.forEach(person => {
-            person.products.forEach(product => {
-                const parsePrice = parseFloat(product.price.replace('R$', '').replace(',', '.'));
-                const partialSum = parsePrice * product.quantity;
-                totalSum += partialSum;
-            });
-        });
-
-        return (total - totalSum).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-
-    const amountOrderForPerson = (products: ProductsInvoice[]) => {
-        let totalSum = 0
-
-        products.forEach(product => {
-            const parsePrice = parseFloat(product.price.replace('R$', '').replace(',', '.'))
-            const partialSum = parsePrice * product.quantity;
-            totalSum += partialSum;
-        })
-
-        return totalSum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        return (totalReplace - totalOrder).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
     const divideEqually = () => {
@@ -225,6 +112,7 @@ const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
         setDataCopy(Invoicedata)
         setData(updateData)
         setPerson(updatedPersons);
+        setIsActiveBtn(amountOrder(data) !== 'R$ 0,00')
     }
 
     return (
@@ -257,7 +145,7 @@ const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
                                 </div>
                             </div>
                             <div>
-                                <Button onClick={() => divideEqually()} variant={"default"} size={"default"} className="flex">
+                                <Button disabled={isActiveBtn} onClick={() => divideEqually()} variant={"default"} size={"default"} className="flex">
                                     Dividir Igualmente
                                 </Button>
                             </div>
@@ -276,7 +164,7 @@ const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
                                     PAGO:
                                 </div>
                                 <div>
-                                    {amountPaid(persons)}
+                                    {amountPaid()}
                                 </div>
                             </div>
                             <div className="flex justify-center items-center gap-x-2 text-primary font-medium">
@@ -284,114 +172,39 @@ const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
                                     RESTANTE:
                                 </div>
                                 <div>
-                                    {amountRemaining(persons)}
+                                    {amountOrder(data)}
                                 </div>
                             </div>
                         </div>
                         <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-4 select-none px-2 max-h-[570px] overflow-auto">
                             {data.map((item, index) => (
-                                <>
-                                    <Button disabled={item.quantity == 0} variant={"outline"} key={index} onClick={() => selectProduct(item)} className="flex cursor-pointer items-center justify-between hover:bg-white/10 rounded-lg border-0 bg-transparent py-7">
-                                        <div className="flex gap-x-3 items-center">
-                                            <div className="bg-primary w-8 h-8 flex justify-center items-center rounded-full">
-                                                <div className="text-black text-lg font-semibold">
-                                                    {item.quantity}
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-col items-start justify-center">
-                                                <div className="text-primary text-sm font-medium">
-                                                    {item.productName}
-                                                </div>
-                                                <div className="text-primary-secundary text-xs font-light">
-                                                    {item.category}
-                                                </div>
+                                <Button disabled={item.quantity == 0} variant={"outline"} key={index} onClick={() => selectProduct(item)} className="flex cursor-pointer items-center justify-between hover:bg-white/10 rounded-lg border-0 bg-transparent py-7">
+                                    <div className="flex gap-x-3 items-center">
+                                        <div className="bg-primary w-8 h-8 flex justify-center items-center rounded-full">
+                                            <div className="text-black text-lg font-semibold">
+                                                {item.quantity}
                                             </div>
                                         </div>
-                                        <div className="flex flex-col items-end justify-center">
-                                            <div className="text-primary text-base font-semibold">{amountProduct(item.price, item.quantity.toString())}</div>
-                                            <div className="text-primary-secundary text-xs font-light">{item.price}/Un</div>
+                                        <div className="flex flex-col items-start justify-center">
+                                            <div className="text-primary text-sm font-medium">
+                                                {item.productName}
+                                            </div>
+                                            <div className="text-primary-secundary text-xs font-light">
+                                                {item.category}
+                                            </div>
                                         </div>
-                                    </Button>
-                                </>
+                                    </div>
+                                    <div className="flex flex-col items-end justify-center">
+                                        <div className="text-primary text-base font-semibold">{amountProduct(item.price, item.quantity.toString())}</div>
+                                        <div className="text-primary-secundary text-xs font-light">{item.price}/Un</div>
+                                    </div>
+                                </Button>
                             ))}
                         </div>
                     </div>
                     <div className="flex flex-col h-full w-[30%] p-3 bg-toast-background">
                         <div className="w-full flex bg-[#1e1e21] rounded-t-xl p-3 h-[400px] overflow-auto">
-                            <Accordion type="single" collapsible className="w-full">
-                                {persons.map((item, index) => (
-                                    <AccordionItem key={index} onClick={() => setSelectedPerson(item)} value={item.id.toString()}>
-                                        <AccordionTrigger className={"text-sm hover:no-underline flex justify-between w-full"}>
-                                            <div className="flex flex-col items-start gap-y-1">
-                                                <div>
-                                                    {item.name}
-                                                </div>
-                                                <div className="text-xs font-light text-gray-400">
-                                                    Total: {amountOrderForPerson(item.products)}
-                                                </div>
-                                            </div>
-                                        </AccordionTrigger>
-                                        <AccordionContent className="flex flex-col">
-                                            {item.products.map((product, index) => (
-                                                <div key={index} className="flex items-center justify-between">
-                                                    <div className={`flex gap-x-2 ${index != 0 && "mt-3"}`}>
-                                                        {
-                                                            product.category != 'Divisão'
-                                                                ?
-                                                                <div onClick={() => decrementPersonProduct(product, item.id)} className="bg-primary group w-8 h-8 flex justify-center items-center group rounded-full">
-                                                                    <div className="text-black text-lg group-hover:hidden font-semibold cursor-pointer">
-                                                                        {product.quantity}
-                                                                    </div>
-                                                                    <div className="text-black text-lg group-hover:flex hidden font-semibold justify-center items-center">
-                                                                        {
-                                                                            product.quantity > 1
-                                                                                ?
-                                                                                <Minus size="20" color="#000" />
-                                                                                :
-                                                                                <X size="20" color="#000" />
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                                :
-                                                                <AlertDialog>
-                                                                    <AlertDialogTrigger className="bg-primary group w-8 h-8 flex justify-center items-center group rounded-full">
-                                                                        <div className="text-black text-lg group-hover:hidden font-semibold cursor-pointer">
-                                                                            {product.quantity}
-                                                                        </div>
-                                                                        <div className="text-black text-lg group-hover:flex hidden font-semibold justify-center items-center">
-                                                                            <X size="20" color="#000" />
-                                                                        </div>
-                                                                    </AlertDialogTrigger>
-                                                                    <AlertDialogContent>
-                                                                        <AlertDialogHeader>
-                                                                            <AlertDialogTitle>Você tem certeza absoluta?</AlertDialogTitle>
-                                                                            <AlertDialogDescription>
-                                                                                Essa ação irá cancelar a divisão igualitaria dos itens retornando todos ao seu estado inicial.
-                                                                            </AlertDialogDescription>
-                                                                        </AlertDialogHeader>
-                                                                        <AlertDialogFooter>
-                                                                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                                                                            <AlertDialogAction onClick={() => cancelDivision()}>Continuar</AlertDialogAction>
-                                                                        </AlertDialogFooter>
-                                                                    </AlertDialogContent>
-                                                                </AlertDialog>
-                                                        }
-                                                        <div className="flex flex-col items-start justify-center">
-                                                            <div className="text-primary text-sm font-medium whitespace-nowrap overflow-hidden truncate max-w-[160px]">
-                                                                {product.productName}
-                                                            </div>
-                                                            <div className="text-primary-secundary text-xs font-light">
-                                                                {product.category}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="text-primary text-base font-semibold mb-1">{amountProduct(product.price, product.quantity.toString())}</div>
-                                                </div>
-                                            ))}
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                ))}
-                            </Accordion>
+                            <AccordionInvoice data={data} dataCopy={dataCopy} persons={persons} setData={setData} setPerson={setPerson} setSelectedPerson={setSelectedPerson} setIsActiveBtn={setIsActiveBtn} />
                         </div>
                         <div className="w-full flex bg-[#1e1e21] p-3 h-[65px] overflow-auto">
                             <div onClick={addNewPerson} className="w-full cursor-pointer border-dashed border-2 border-white/20 hover:border-white/50 group rounded-sm flex items-center justify-center">

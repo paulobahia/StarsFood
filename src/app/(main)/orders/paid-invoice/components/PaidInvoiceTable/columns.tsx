@@ -3,14 +3,6 @@
 import { amountProduct } from "@/utils/methods"
 import { ColumnDef } from "@tanstack/react-table"
 
-export type ProductsInvoice = {
-  id: string
-  productName: string
-  quantity: number
-  price: string
-  category: string
-}
-
 export const columns: ColumnDef<ProductsInvoice>[] = [
   {
     accessorKey: "productName",
