@@ -14,6 +14,7 @@ type DialogSplitProps = {
 
 const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
 
+    const [dataCopy, setDataCopy] = useState<ProductsInvoice[]>()
     const amount = useMemo(() => amountOrder(Invoicedata), [Invoicedata]);
     const [data, setData] = useState<ProductsInvoice[]>([...Invoicedata])
     const [isActiveBtn, setIsActiveBtn] = useState<boolean>(false)
@@ -30,7 +31,6 @@ const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
         },
     ])
     const [selectedPerson, setSelectedPerson] = useState<Person>()
-    const [dataCopy, setDataCopy] = useState<ProductsInvoice[]>()
 
     const addNewPerson = () => {
         const newId = persons.length + 1;
@@ -45,6 +45,8 @@ const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
     };
 
     const selectProduct = (product: ProductsInvoice) => {
+        setDataCopy([...Invoicedata])
+
         if (selectedPerson) {
             const updatedPeople = persons.map(person => {
                 if (person.id === selectedPerson.id) {
@@ -109,7 +111,6 @@ const DialogSplit: React.FC<DialogSplitProps> = ({ Invoicedata }) => {
                 quantity: 0,
             };
         });
-        setDataCopy(Invoicedata)
         setData(updateData)
         setPerson(updatedPersons);
         setIsActiveBtn(amountOrder(data) !== 'R$ 0,00')

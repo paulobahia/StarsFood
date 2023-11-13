@@ -151,9 +151,14 @@ const AccordionInvoice: React.FC<AccordionInvoiceProps> = ({ data, persons, data
         });
 
         const updatePersons = persons.map((item) => {
-            return {
-                ...item,
-                products: []
+            if (item.id == person.id) {
+                return {
+                    ...item,
+                    products: []
+                }
+            }
+            else {
+                return item
             }
         });
 
