@@ -37,6 +37,7 @@
     "eslint-config-next": "13.4.19",
     "iconsax-react": "^0.0.8",
     "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.268.0",
     "next": "13.4.19",
     "next-themes": "^0.2.1",
