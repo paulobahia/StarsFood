@@ -49,8 +49,4 @@ export const columns: ColumnDef<Categories>[] = [
       return value.includes(row.getValue(id))
     },
   },
-  {
-    id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
-  }
 ]
