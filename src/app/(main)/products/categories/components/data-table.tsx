@@ -27,16 +27,16 @@ import {
 
 import { DataTablePagination } from "../components/data-table-pagination"
 import { DataTableToolbar } from "../components/data-table-toolbar"
+import { DataTableRowActions } from "./data-table-row-actions"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    onUpdateOrDelete: () => void;
 }
 
-export function DataTable<TData, TValue>({
-    columns,
-    data,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({columns,data, onUpdateOrDelete}: DataTableProps<TData, TValue>) 
+{
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
@@ -105,6 +105,12 @@ export function DataTable<TData, TValue>({
                                             )}
                                         </TableCell>
                                     ))}
+                                    <TableCell>
+                                        <DataTableRowActions
+                                            onUpdateOrDelete={onUpdateOrDelete}
+                                            row={row}
+                                        />
+                                    </TableCell>
                                 </TableRow>
                             ))
                         ) : (

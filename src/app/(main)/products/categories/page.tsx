@@ -1,3 +1,5 @@
+"use client"
+
 import { DataTable } from "./components/data-table";
 import { Categories, columns } from "./components/columns";
 
@@ -34,6 +36,10 @@ const Fakedata: Categories[] = [
     },
 ]
 
+const handleUpdateOrDelete = () => {
+    console.log("GET CATEGORIES")
+}
+
 export default function Categories() {
     return (
         <main className="text-white">
@@ -44,7 +50,7 @@ export default function Categories() {
             </div>
             <div className="flex w-full mt-5 border border-backgrounds-primary-light bg-backgrounds-secondary rounded-lg">
                 <div className="w-full">
-                    <DataTable columns={columns} data={Fakedata} />
+                    <DataTable onUpdateOrDelete={handleUpdateOrDelete} columns={columns} data={Fakedata} />
                 </div>
             </div>
         </main>

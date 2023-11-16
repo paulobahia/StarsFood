@@ -20,6 +20,7 @@ import {
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>
+    onUpdateOrDelete: () => void;
 }
 
 const labels = [
@@ -35,6 +36,7 @@ const labels = [
 
 export function DataTableRowActions<TData>({
     row,
+    onUpdateOrDelete
 }: DataTableRowActionsProps<TData>) {
 
     return (
@@ -63,7 +65,7 @@ export function DataTableRowActions<TData>({
                     </DropdownMenuSubContent>
                 </DropdownMenuSub>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="flex gap-x-2">
+                <DropdownMenuItem onClick={onUpdateOrDelete} className="flex gap-x-2">
                     <div>
                         Remover
                     </div>
