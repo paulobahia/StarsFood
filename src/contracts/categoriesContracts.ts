@@ -13,10 +13,7 @@ export const CategorySchema = z.object({
 export type Category = z.infer<typeof CategorySchema>;
 
 export const CreateCategorySchema = z.object({
-    categoryName: z.string(),
-    imgUrl: z.string(),
-    createdTime: z.string(),
-    restaurantId: z.number(),
+    categoryName: z.string().nonempty('A categoria é obrigatório'),
 });
 
 export type CreateCategory = z.infer<typeof CreateCategorySchema>
@@ -26,7 +23,6 @@ export const UpdateCategorySchema = z.object({
     categoryName: z.string(),
     updateTime: z.date().nullable(),
     imgUrl: z.string(),
-    restaurantId: z.number(),
     isAvailable: z.boolean(),
 });
 
