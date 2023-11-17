@@ -40,7 +40,8 @@ const LoginForm = () => {
             password
         }
         Login(postData)
-            .then(() => {
+            .then((response) => {
+                setLoading(false)
                 router.push('/overview')
             })
             .catch((e) => {
@@ -75,7 +76,7 @@ const LoginForm = () => {
                 </div>
                 {errors.password && <span className='text-danger-base w-full text-xs font-semibold'>{errors.password.message}</span>}
                 <div className='w-full flex justify-start'>
-                    <p className='text-white font-semibold text-xs cursor-pointer text-end'>
+                    <p className='text-white font-semibold text-xs cursor-pointer text-end hover:underline-offset-1'>
                         <Link className="cursor-pointer" href={"/reset-password"}>
                             Esqueci minha senha
                         </Link>
@@ -94,25 +95,6 @@ const LoginForm = () => {
                     </button>
                 </div>
             </div>
-            <div className="mt-6 gap-x-3 flex items-center justify-center w-full">
-                <div className="bg-neutral-600 p-[0.2px] rounded-full flex-1" />
-                <div>
-                    <p className="text-[10px] font-normal text-primary-secundary">OU CONTINUAR COM</p>
-                </div>
-                <div className="bg-primary-secundary p-[0.2px] rounded-full flex-1" />
-            </div>
-            <button disabled={loading} className="bg-transparent w-full p-2 mt-4 border font-medium border-primary-secundary text-white text-sm rounded-md hover:bg-white/10 disabled:bg-neutral-600">
-                {loading
-                    ?
-                    <span className='flex justify-center'>
-                        <PingLoading />
-                    </span>
-                    :
-                    <span>
-                        Google
-                    </span>
-                }
-            </button>
         </form>
     )
 }

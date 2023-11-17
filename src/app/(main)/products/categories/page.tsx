@@ -2,45 +2,32 @@
 
 import { DataTable } from "./components/data-table";
 import { Categories, columns } from "./components/columns";
+import { useEffect, useState } from "react";
+import { getAllCategorys } from "@/services";
 
-const Fakedata: Categories[] = [
-    {
-        id: "#003",
-        name: "Acompanhamentos",
-        isAvailable: 'active'
-    },
-    {
-        id: "#010",
-        name: "Bebidas",
-        isAvailable: 'active'
-    },
-    {
-        id: "#025",
-        name: "Carnes Principais",
-        isAvailable: 'active'
-    },
-    {
-        id: "#042",
-        name: "Saladas",
-        isAvailable: 'inactive'
-    },
-    {
-        id: "#068",
-        name: "Sobremesas",
-        isAvailable: 'active'
-    },
-    {
-        id: "#089",
-        name: "Hambúrgueres",
-        isAvailable: 'inactive'
-    },
-]
-
-const handleUpdateOrDelete = () => {
-    console.log("GET CATEGORIES")
-}
 
 export default function Categories() {
+
+    const [data, setData] = useState<Categories[]>()
+
+    useEffect(() => {
+        getCategories()
+    }, [])
+
+    const handleUpdateOrDelete = () => {
+        getCategories()
+    }
+
+    const getCategories = () => {
+        getAllCategorys()
+            .then((response) => {
+                setData(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
     return (
         <main className="text-white">
             <div className="flex-col flex justify-center items-center gap-y-4">
@@ -50,7 +37,10 @@ export default function Categories() {
             </div>
             <div className="flex w-full mt-5 border border-backgrounds-primary-light bg-backgrounds-secondary rounded-lg">
                 <div className="w-full">
-                    <DataTable onUpdateOrDelete={handleUpdateOrDelete} columns={columns} data={Fakedata} />
+                    {
+                        data &&
+                        <DataTable onUpdateOrDelete={handleUpdateOrDelete} columns={columns} data={data} />
+                    }
                 </div>
             </div>
         </main>

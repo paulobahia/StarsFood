@@ -52,7 +52,7 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
             <div className="flex items-center gap-x-3">
                 <DataTableViewOptions table={table} />
                 <Button
-                    onClick={() => router.push('/products/add-products')}
+                    onClick={() => router.push('/products/categories/add-categories')}
                     variant="default"
                     size="sm"
                     className="ml-auto py-2 hidden h-8 lg:flex border border-primary-light"

@@ -2,6 +2,7 @@ import { Button } from "@/app/components/ui/button"
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/app/components/ui/dropdown-menu"
 import { MixerHorizontalIcon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
+import { Categories } from "./columns"
 
 interface DataTableViewOptionsProps<TData> {
     table: Table<TData>
@@ -11,7 +12,7 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
 
     const columName: any = {
         id: 'ID',
-        name: "Categoria",
+        categoryName: "Categoria",
         isAvailable: "Status",
     }
 

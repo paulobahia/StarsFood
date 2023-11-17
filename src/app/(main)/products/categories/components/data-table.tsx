@@ -35,8 +35,7 @@ interface DataTableProps<TData, TValue> {
     onUpdateOrDelete: () => void;
 }
 
-export function DataTable<TData, TValue>({columns,data, onUpdateOrDelete}: DataTableProps<TData, TValue>) 
-{
+export function DataTable<TData, TValue>({ columns, data, onUpdateOrDelete }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
@@ -105,7 +104,7 @@ export function DataTable<TData, TValue>({columns,data, onUpdateOrDelete}: DataT
                                             )}
                                         </TableCell>
                                     ))}
-                                    <TableCell>
+                                    <TableCell className="flex justify-end mr-5">
                                         <DataTableRowActions
                                             onUpdateOrDelete={onUpdateOrDelete}
                                             row={row}

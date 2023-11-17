@@ -11,7 +11,7 @@ import { DataTableRowActions } from "./data-table-row-actions"
 
 export type Categories = {
   id: string
-  name: string
+  categoryName: string
   isAvailable: string
 }
 
@@ -21,11 +21,11 @@ export const columns: ColumnDef<Categories>[] = [
     header: "ID",
   },
   {
-    accessorKey: "name",
+    accessorKey: "categoryName",
     header: ({ column }) => (
       <DataTableColumnHeader className="min-w-max" column={column} title="Categoria" />
     ),
-    cell: ({ row }) => <div className="flex min-w-max">{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="flex min-w-max">{row.getValue("categoryName")}</div>,
   },
   {
     accessorKey: "isAvailable",

@@ -121,7 +121,7 @@ export default function AddProducts() {
                 variations
             }
             router.push('/products')
-            _Notify.showNotify(' Produto Criado com Sucesso', 'Seu produto foi criado com sucesso e está pronto para ser exibido.', 'Success')
+            _Notify.showNotify('Produto Criado com Sucesso', 'Seu produto foi criado com sucesso e está pronto para ser exibido.', 'Success')
             console.log(postData)
         }
     }
