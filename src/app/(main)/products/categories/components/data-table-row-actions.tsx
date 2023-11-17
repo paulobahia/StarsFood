@@ -32,6 +32,8 @@ import {
 
 import { deleteCategory, updateStatusCategory } from "@/services"
 import { useState } from "react"
+import { Label } from "@/app/components/ui/label"
+import { Input } from "@/app/components/ui/input"
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>
@@ -43,7 +45,8 @@ export function DataTableRowActions<TData>({
     onUpdateOrDelete
 }: DataTableRowActionsProps<TData>) {
 
-    const [isRemoveCategory, setIsRemoveCategory] = useState<boolean>(false)
+    const [isTypeHandlerCategory, setIsTypeHandlerCategory] = useState<string>('')
+    const [nameCategory, setNameCategory] = useState<string>(row.getValue('categoryName'))
 
     const removeCategory = (id: number) => {
         deleteCategory(id)
@@ -78,18 +81,20 @@ export function DataTableRowActions<TData>({
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Editar</DropdownMenuItem>
+                    <AlertDialogTrigger className="w-full" onClick={() => setIsTypeHandlerCategory('rename')}>
+                        <DropdownMenuItem>Editar</DropdownMenuItem>
+                    </AlertDialogTrigger>
                     <DropdownMenuSeparator />
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
                         <DropdownMenuSubContent>
                             <DropdownMenuRadioGroup className="flex flex-col" value={row.getValue('isAvailable') ? 'active' : 'inactive'}>
-                                <AlertDialogTrigger disabled={row.getValue('isAvailable')} onClick={() => setIsRemoveCategory(false)}>
+                                <AlertDialogTrigger disabled={row.getValue('isAvailable')} onClick={() => setIsTypeHandlerCategory('status')}>
                                     <DropdownMenuRadioItem disabled={row.getValue('isAvailable')} value={'active'}>
                                         Ativo
                                     </DropdownMenuRadioItem>
                                 </AlertDialogTrigger>
-                                <AlertDialogTrigger disabled={!row.getValue('isAvailable')} onClick={() => setIsRemoveCategory(false)}>
+                                <AlertDialogTrigger disabled={!row.getValue('isAvailable')} onClick={() => setIsTypeHandlerCategory('status')}>
                                     <DropdownMenuRadioItem disabled={!row.getValue('isAvailable')} value={'inactive'}>
                                         Inativo
                                     </DropdownMenuRadioItem>
@@ -98,7 +103,7 @@ export function DataTableRowActions<TData>({
                         </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     <DropdownMenuSeparator />
-                    <AlertDialogTrigger onClick={() => setIsRemoveCategory(true)}>
+                    <AlertDialogTrigger onClick={() => setIsTypeHandlerCategory('remove')}>
                         <DropdownMenuItem className="flex gap-x-2">
                             Remover
                             <DropdownMenuShortcut className="hidden md:flex">Ctrl + D</DropdownMenuShortcut>
@@ -107,19 +112,30 @@ export function DataTableRowActions<TData>({
                 </DropdownMenuContent>
             </DropdownMenu>
             <AlertDialogPortal>
-                {isRemoveCategory
-                    ?
+                {
+                    isTypeHandlerCategory == 'rename' &&
                     <AlertDialogContent>
                         <AlertDialogHeader>
-                            <AlertDialogTitle>Você tem certeza absoluta?</AlertDialogTitle>
-                            <AlertDialogDescription>Essa ação não pode ser desfeita. Isso excluirá permanentemente sua categoria.</AlertDialogDescription>
+                            <AlertDialogTitle>Editar Categoria</AlertDialogTitle>
+                            <AlertDialogDescription>Informe o novo nome desejado para a categoria e clique em 'Salvar' para finalizar a alteração.</AlertDialogDescription>
                         </AlertDialogHeader>
+                        <div className="gap-4 py-4 flex flex-col items-start">
+                            <Label className="text-right">
+                                Categoria
+                            </Label>
+                            <Input
+                                defaultValue={nameCategory}
+                                onChange={() => setNameCategory}
+                            />
+                        </div>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => removeCategory(row.getValue('id'))} >Continuar</AlertDialogAction>
+                            <AlertDialogAction>Salvar</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
-                    :
+                }
+                {
+                    isTypeHandlerCategory == 'status' &&
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>Você tem certeza absoluta?</AlertDialogTitle>
@@ -128,6 +144,19 @@ export function DataTableRowActions<TData>({
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
                             <AlertDialogAction onClick={() => handlerStatusCateogory(row.getValue('id'), row.getValue('isAvailable'))}>Continuar</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                }
+                {
+                    isTypeHandlerCategory == 'remove' &&
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Você tem certeza absoluta?</AlertDialogTitle>
+                            <AlertDialogDescription>Essa ação não pode ser desfeita. Isso excluirá permanentemente sua categoria.</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => removeCategory(row.getValue('id'))} >Continuar</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 }

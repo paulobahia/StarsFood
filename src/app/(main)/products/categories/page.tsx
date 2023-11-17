@@ -8,6 +8,39 @@ import { getAllCategorys } from "@/services";
 
 export default function Categories() {
 
+    const Fakedata: Categories[] = [
+        {
+            id: "#003",
+            categoryName: "Acompanhamentos",
+            isAvailable: 'active'
+        },
+        {
+            id: "#010",
+            categoryName: "Bebidas",
+            isAvailable: 'active'
+        },
+        {
+            id: "#025",
+            categoryName: "Carnes Principais",
+            isAvailable: 'active'
+        },
+        {
+            id: "#042",
+            categoryName: "Saladas",
+            isAvailable: 'inactive'
+        },
+        {
+            id: "#068",
+            categoryName: "Sobremesas",
+            isAvailable: 'active'
+        },
+        {
+            id: "#089",
+            categoryName: "Hambúrgueres",
+            isAvailable: 'inactive'
+        },
+    ]
+
     const [data, setData] = useState<Categories[]>()
 
     useEffect(() => {
@@ -37,10 +70,7 @@ export default function Categories() {
             </div>
             <div className="flex w-full mt-5 border border-backgrounds-primary-light bg-backgrounds-secondary rounded-lg">
                 <div className="w-full">
-                    {
-                        data &&
-                        <DataTable onUpdateOrDelete={handleUpdateOrDelete} columns={columns} data={data} />
-                    }
+                    <DataTable onUpdateOrDelete={handleUpdateOrDelete} columns={columns} data={Fakedata} />
                 </div>
             </div>
         </main>
