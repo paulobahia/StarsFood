@@ -1,5 +1,5 @@
-import server from "@/config/axios"
-import { Auth, AuthSchema, CheckEmail, CheckEmailSchema, CreateUser, CreateUserSchema, ResetPassword, ResetPasswordSchema } from "@/contracts";
+import { server, http } from "@/config/axios"
+import { Auth, AuthSchema, Category, CheckEmail, CheckEmailSchema, CreateCategory, CreateCategorySchema, CreateUser, CreateUserSchema, ResetPassword, ResetPasswordSchema } from "@/contracts";
 
 // Auth
 
@@ -23,4 +23,23 @@ export const checkEmail = async (payload: CheckEmail) => {
 export const resetPassword = async (payload: ResetPassword) => {
     const validatedata = ResetPasswordSchema.parse(payload)
     return server.post('users/reset-password', validatedata)
+}
+
+// Categorys
+
+export const getAllCategorys = async () => {
+    return http.get('GetAllCategories').then((i) => i.data)
+}
+
+export const createCategory = async (payload: CreateCategory) => {
+    const validateData = CreateCategorySchema.parse(payload)
+    return http.post('CreateCategory', validateData).then((i) => i.data)
+}
+
+export const deleteCategory = async (id: number) => {
+    return http.delete('DeleteCategory/' + id).then((i) => i.data)
+}
+
+export const updateStatusCategory = async (id: number, status: boolean) => {
+    return http.patch('UpdateCategory/' + id, status).then((i) => i.data)
 }

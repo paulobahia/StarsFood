@@ -15,17 +15,37 @@ const server = axios.create({
 
 const http = axios.create({
     baseURL: 'https://localhost:7100/api/',
+    withCredentials: true,
 });
+
+const cookies = Cookies.get('TokenServer');
+
+if (cookies) {
+    const { restaurantId }: JWT = jwtDecode(cookies);
+
+    http.defaults.headers['X-RestaurantId'] = restaurantId
+    server.defaults.headers['RestaurantId'] = restaurantId
+}
 
 server.interceptors.request.use(
     (config) => {
 
-        const cookies = Cookies.get('jwt');
+        if (cookies) {
+            config.headers.Authorization = `Bearer ${cookies}`;
+        }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+server.interceptors.request.use(
+    (config) => {
 
         if (cookies) {
             const { restaurantId }: JWT = jwtDecode(cookies);
-            config.headers.Authorization = `Bearer ${cookies}`;
-            config.headers['RestaurantId'] = restaurantId
         }
 
         return config;
