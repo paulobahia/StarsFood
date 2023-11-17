@@ -117,7 +117,7 @@ export function DataTableRowActions<TData>({
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>Editar Categoria</AlertDialogTitle>
-                            <AlertDialogDescription>Informe o novo nome desejado para a categoria e clique em 'Salvar' para finalizar a alteração.</AlertDialogDescription>
+                            <AlertDialogDescription>Informe o novo nome desejado para a categoria e clique em Salvar para finalizar a alteração.</AlertDialogDescription>
                         </AlertDialogHeader>
                         <div className="gap-4 py-4 flex flex-col items-start">
                             <Label className="text-right">
