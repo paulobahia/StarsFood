@@ -34,7 +34,7 @@ export const columns: ColumnDef<Categories>[] = [
     ),
     cell: ({ row }) => {
       return (
-        row.getValue("isAvailable") == 'active'
+        row.getValue("isAvailable") == true
           ?
           <div className="flex justify-center items-center mr-7 min-w-max">
             <Badge className="rounded-md" variant='outline'>Ativo</Badge>

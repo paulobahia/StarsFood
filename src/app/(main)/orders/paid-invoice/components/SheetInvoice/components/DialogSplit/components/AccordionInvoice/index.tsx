@@ -25,6 +25,12 @@ import {
     ContextMenuShortcut,
     ContextMenuTrigger,
 } from "@/app/components/ui/context-menu"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/app/components/ui/tooltip"
 
 import { X, Minus, Check } from "lucide-react"
 import { amountProduct } from "@/utils/methods"
@@ -237,14 +243,33 @@ const AccordionInvoice: React.FC<AccordionInvoiceProps> = ({ data, persons, data
                             <div>Limpar</div>
                         </ContextMenuItem>
                         <ContextMenuSeparator />
-                        <ContextMenuItem disabled={persons.length <= 2} onClick={() => removePerson(item.id)} className="flex items-center gap-3 hover:bg-white/10">
-                            <div>Excluir</div>
-                            <ContextMenuShortcut>Ctrl + D</ContextMenuShortcut>
-                        </ContextMenuItem>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger className="w-full">
+                                    <ContextMenuItem disabled={persons.length <= 2 || item.products.length != 0} onClick={() => removePerson(item.id)} className="flex items-center gap-3 hover:bg-white/10">
+                                        Excluir
+                                        <ContextMenuShortcut>Ctrl + D</ContextMenuShortcut>
+                                    </ContextMenuItem>
+                                </TooltipTrigger>
+                                {
+                                    item.products.length != 0 &&
+                                    <TooltipContent side="bottom">
+                                        <p>Antes de excluir esta pessoa, certifique-se de remover todos os produtos associados a ela.</p>
+                                    </TooltipContent>
+                                }
+                                {
+                                    persons.length == 2 &&
+                                    <TooltipContent side="bottom">
+                                        <p>O número mínimo de pessoas para a divisão é 2. Portanto, não é possível remover essa pessoa.</p>
+                                    </TooltipContent>
+                                }
+                            </Tooltip>
+                        </TooltipProvider>
                     </ContextMenuContent>
                 </ContextMenu>
-            ))}
-        </Accordion>
+            ))
+            }
+        </Accordion >
     );
 };
 

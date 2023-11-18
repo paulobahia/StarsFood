@@ -1,5 +1,5 @@
 import { server, http } from "@/config/axios"
-import { Auth, AuthSchema, Category, CheckEmail, CheckEmailSchema, CreateCategory, CreateCategorySchema, CreateUser, CreateUserSchema, ResetPassword, ResetPasswordSchema } from "@/contracts";
+import { Auth, AuthSchema, Category, CheckEmail, CheckEmailSchema, CreateCategory, CreateCategorySchema, CreateUser, CreateUserSchema, ResetPassword, ResetPasswordSchema, UpdateCategory, UpdateCategorySchema } from "@/contracts";
 
 // Auth
 
@@ -40,6 +40,7 @@ export const deleteCategory = async (id: number) => {
     return http.delete('DeleteCategory/' + id).then((i) => i.data)
 }
 
-export const updateStatusCategory = async (id: number, status: boolean) => {
-    return http.patch('UpdateCategory/' + id, status).then((i) => i.data)
+export const updateCategory = async (id: number, payload: UpdateCategory) => {
+    const validateData = UpdateCategorySchema.parse(payload)
+    return http.patch('UpdateCategory/' + id, validateData).then((i) => i.data)
 }

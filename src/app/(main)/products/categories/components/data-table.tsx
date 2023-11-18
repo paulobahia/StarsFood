@@ -28,14 +28,16 @@ import {
 import { DataTablePagination } from "../components/data-table-pagination"
 import { DataTableToolbar } from "../components/data-table-toolbar"
 import { DataTableRowActions } from "./data-table-row-actions"
+import SkeletonCategoryTable from "./SkeletonCategoryTable"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     onUpdateOrDelete: () => void;
+    isLoading: boolean
 }
 
-export function DataTable<TData, TValue>({ columns, data, onUpdateOrDelete }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, onUpdateOrDelete, isLoading }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
@@ -89,40 +91,47 @@ export function DataTable<TData, TValue>({ columns, data, onUpdateOrDelete }: Da
                             </TableRow>
                         ))}
                     </TableHeader>
-                    <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
+                    {
+                        !isLoading
+                            ?
+                            <TableBody>
+                                {table.getRowModel().rows?.length ? (
+                                    table.getRowModel().rows.map((row) => (
+                                        <TableRow
+                                            key={row.id}
+                                            data-state={row.getIsSelected() && "selected"}
+                                        >
+                                            {row.getVisibleCells().map((cell) => (
+                                                <TableCell key={cell.id}>
+                                                    {flexRender(
+                                                        cell.column.columnDef.cell,
+                                                        cell.getContext()
+                                                    )}
+                                                </TableCell>
+                                            ))}
+                                            <TableCell className="flex justify-end mr-5">
+                                                <DataTableRowActions
+                                                    onUpdateOrDelete={onUpdateOrDelete}
+                                                    row={row}
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell
+                                            colSpan={columns.length}
+                                            className="h-24 text-center"
+                                        >
+                                            Sem resultados
                                         </TableCell>
-                                    ))}
-                                    <TableCell className="flex justify-end mr-5">
-                                        <DataTableRowActions
-                                            onUpdateOrDelete={onUpdateOrDelete}
-                                            row={row}
-                                        />
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
-                                    Sem resultados
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                            :
+                            <SkeletonCategoryTable />
+                    }
+
                 </Table>
             </div>
             <DataTablePagination table={table} />

@@ -21,8 +21,6 @@ export type CreateCategory = z.infer<typeof CreateCategorySchema>
 export const UpdateCategorySchema = z.object({
     id: z.number(),
     categoryName: z.string(),
-    updateTime: z.date().nullable(),
-    imgUrl: z.string(),
     isAvailable: z.boolean(),
 });
 

@@ -30,10 +30,11 @@ import {
     AlertDialogAction,
 } from "@/app/components/ui/alert-dialog"
 
-import { deleteCategory, updateStatusCategory } from "@/services"
+import { deleteCategory, updateCategory } from "@/services"
 import { useState } from "react"
 import { Label } from "@/app/components/ui/label"
 import { Input } from "@/app/components/ui/input"
+import { UpdateCategory } from "@/contracts"
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>
@@ -46,7 +47,7 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
 
     const [isTypeHandlerCategory, setIsTypeHandlerCategory] = useState<string>('')
-    const [nameCategory, setNameCategory] = useState<string>(row.getValue('categoryName'))
+    const [nameCategory, setNameCategory] = useState<string>('')
 
     const removeCategory = (id: number) => {
         deleteCategory(id)
@@ -58,9 +59,25 @@ export function DataTableRowActions<TData>({
             })
     }
 
-    const handlerStatusCateogory = (id: number, status: boolean) => {
 
-        updateStatusCategory(id, !status)
+    const handlerNameCateogory = (id: number, data: UpdateCategory) => {
+
+        let postData: UpdateCategory = { ...data, categoryName: nameCategory }
+
+        updateCategory(id, postData)
+            .then(() => {
+                onUpdateOrDelete()
+            })
+            .catch((e) => {
+                console.log(e)
+            })
+    }
+
+    const handlerStatusCateogory = (id: number, data: UpdateCategory) => {
+
+        let postData: UpdateCategory = { ...data, isAvailable: !data.isAvailable }
+
+        updateCategory(id, postData)
             .then(() => {
                 onUpdateOrDelete()
             })
@@ -81,7 +98,7 @@ export function DataTableRowActions<TData>({
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <AlertDialogTrigger className="w-full" onClick={() => setIsTypeHandlerCategory('rename')}>
+                    <AlertDialogTrigger className="w-full" onClick={() => (setIsTypeHandlerCategory('rename'), setNameCategory(row.getValue('categoryName')))}>
                         <DropdownMenuItem>Editar</DropdownMenuItem>
                     </AlertDialogTrigger>
                     <DropdownMenuSeparator />
@@ -124,13 +141,13 @@ export function DataTableRowActions<TData>({
                                 Categoria
                             </Label>
                             <Input
-                                defaultValue={nameCategory}
-                                onChange={() => setNameCategory}
+                                value={nameCategory}
+                                onChange={(e) => setNameCategory(e.target.value)}
                             />
                         </div>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction>Salvar</AlertDialogAction>
+                            <AlertDialogAction disabled={nameCategory == '' || nameCategory.length == 0} onClick={() => handlerNameCateogory(row.getValue('id'), { id: row.getValue('id'), categoryName: row.getValue('categoryName'), isAvailable: row.getValue('isAvailable') })}>Salvar</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 }
@@ -143,7 +160,7 @@ export function DataTableRowActions<TData>({
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handlerStatusCateogory(row.getValue('id'), row.getValue('isAvailable'))}>Continuar</AlertDialogAction>
+                            <AlertDialogAction onClick={() => handlerStatusCateogory(row.getValue('id'), { id: row.getValue('id'), categoryName: row.getValue('categoryName'), isAvailable: row.getValue('isAvailable') })}>Continuar</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 }

@@ -41,7 +41,6 @@ const LoginForm = () => {
         }
         Login(postData)
             .then((response) => {
-                setLoading(false)
                 router.push('/overview')
             })
             .catch((e) => {
