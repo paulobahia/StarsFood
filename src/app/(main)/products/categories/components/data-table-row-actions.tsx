@@ -147,7 +147,7 @@ export function DataTableRowActions<TData>({
                         </div>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction disabled={nameCategory == '' || nameCategory.length == 0} onClick={() => handlerNameCateogory(row.getValue('id'), { id: row.getValue('id'), categoryName: row.getValue('categoryName'), isAvailable: row.getValue('isAvailable') })}>Salvar</AlertDialogAction>
+                            <AlertDialogAction disabled={nameCategory == '' || nameCategory.length == 0} onClick={() => handlerNameCateogory(row.getValue('id'), { categoryName: row.getValue('categoryName'), isAvailable: row.getValue('isAvailable') })}>Salvar</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 }
@@ -160,7 +160,7 @@ export function DataTableRowActions<TData>({
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handlerStatusCateogory(row.getValue('id'), { id: row.getValue('id'), categoryName: row.getValue('categoryName'), isAvailable: row.getValue('isAvailable') })}>Continuar</AlertDialogAction>
+                            <AlertDialogAction onClick={() => handlerStatusCateogory(row.getValue('id'), { categoryName: row.getValue('categoryName'), isAvailable: row.getValue('isAvailable') })}>Continuar</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 }

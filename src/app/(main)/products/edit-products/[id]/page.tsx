@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { z } from 'zod'
+import { promise, z } from 'zod'
 import InfoProducts from "./components/InfoProducts";
 import { DataTable } from "./components/data-table";
 import { columns } from "./components/columns";
@@ -13,10 +13,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Notify } from "@/context/NotifyContext";
 import { useRouter } from "next/navigation";
-import { Categories } from "../categories/components/columns";
-import { createProduct } from "@/services";
+import { Categories } from "../../categories/components/columns";
+import { createProduct, getAllCategorys, getProductById } from "@/services";
 import PingLoading from "@/app/components/ui/pingLoading";
-import { CreateProduct } from "@/contracts/productsContracts";
+import { CreateProduct, Product } from "@/contracts/productsContracts";
 
 export type Variants = {
     name: string
@@ -42,20 +42,69 @@ const defaultCategoryData: Categories = {
     isAvailable: false
 }
 
-export default function AddProducts() {
+export default function AddProducts({ params }: { params: { id: string } }) {
     type InfoProdutctsFormData = z.infer<typeof infoProductsFormSchema>
     const [productName, setProductName] = useState<string | null>(null)
     const [productsImage, setProductsImage] = useState<Imagens[]>(() => [...defaultImagens]);
+    const [description, setDescription] = useState<string>('')
     const [categoryDataForm, setCategoryDataForm] = useState<Categories>(defaultCategoryData)
     const [variations, setVariations] = useState<Variants[]>([]);
     const [loading, setLoading] = useState<boolean>(false)
+    const [isLoadingData, setIsLoadingData] = useState<boolean>(false)
+    const [category, setCategory] = useState<Categories[]>([])
 
     const _Notify = Notify();
     const router = useRouter()
 
+    useEffect(() => {
+        setIsLoadingData(true)
+        getProductData()
+    }, [])
+
+    const getProductData = () => {
+        let productId = parseInt(params.id)
+        Promise.all([
+            getProduct(productId),
+            getCategories()
+        ])
+        setIsLoadingData(false)
+    }
+
+    const getProduct = (productId: number) => {
+        getProductById(productId)
+            .then((response) => {
+                setEditProductData(response)
+            })
+            .catch((e) => {
+                console.log(e)
+                router.push(`/products`)
+            })
+    }
+
+    const getCategories = () => {
+        getAllCategorys()
+            .then((response) => {
+                setCategory(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+
     const { register, handleSubmit, formState: { errors } } = useForm<InfoProdutctsFormData>({
         resolver: zodResolver(infoProductsFormSchema)
     })
+
+    const setEditProductData = (product: Product) => {
+        setProductName(product.name)
+        setCategoryDataForm({
+            id: product.category.id.toString(),
+            categoryName: product.category.categoryName,
+            isAvailable: product.category.isAvailable
+        })
+        setDescription(product.description)
+    }
 
     const handleAdd = () => {
         const newItem = {
@@ -163,45 +212,53 @@ export default function AddProducts() {
         <form onSubmit={handleSubmit(postProduct)} className="text-white">
             <div className="flex-col flex justify-center items-center gap-y-4">
                 <div className="flex flex-1 w-full text-3xl font-semibold">
-                    Adicionar Produto
+                    Editar Produto
                 </div>
             </div>
-            <div className="min-h-screen grid grid-cols-1 gap-x-3 gap-y-3 lg:grid-cols-2 justify-between mt-5">
-                <div className="flex flex-col gap-y-3">
-                    <ImageProducts productsImage={productsImage} onRemove={handleRemoveImage} />
-                    <InfoProducts setProductName={setProductName} productName={productName} register={register} errors={errors} variations={variations} setCategoryDataForm={setCategoryDataForm} />
-                </div>
-                <div className="flex flex-col gap-y-3 justify-end">
-                    <DragInDropImage productsImage={productsImage} setProductsImage={setProductsImage} />
-                    <div className="bg-backgrounds-secondary p-5 rounded-xl gap-y-3 flex flex-col h-[60%]">
-                        <div className="flex items-center justify-between">
-                            <div className="text-xl font-semibold">
-                                Gerenciar Variações
+            {
+                isLoadingData
+                    ?
+                    <div>
+                        Loading
+                    </div>
+                    :
+                    <div className="min-h-screen grid grid-cols-1 gap-x-3 gap-y-3 lg:grid-cols-2 justify-between mt-5">
+                        <div className="flex flex-col gap-y-3">
+                            <ImageProducts productsImage={productsImage} onRemove={handleRemoveImage} />
+                            <InfoProducts setProductName={setProductName} productName={productName} register={register} errors={errors} variations={variations} setCategoryDataForm={setCategoryDataForm} categoryDataForm={categoryDataForm} description={description} setDescription={setDescription} category={category}/>
+                        </div>
+                        <div className="flex flex-col gap-y-3 justify-end">
+                            <DragInDropImage productsImage={productsImage} setProductsImage={setProductsImage} />
+                            <div className="bg-backgrounds-secondary p-5 rounded-xl gap-y-3 flex flex-col h-[60%]">
+                                <div className="flex items-center justify-between">
+                                    <div className="text-xl font-semibold">
+                                        Gerenciar Variações
+                                    </div>
+                                    <div>
+                                        <button disabled={productName == null || productName == ''} type='button' onClick={handleAdd} className="bg-white transition-colors flex items-center justify-center ease-in-out w-full py-1.5 px-2 border text-black font-medium text-xs rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black disabled:cursor-default">
+                                            Adicionar Variantes
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="w-full h-full overflow-auto">
+                                    <DataTable columns={columns} data={variations} onEdit={handleEdit} onRemove={handleRemove} />
+                                </div>
                             </div>
-                            <div>
-                                <button disabled={productName == null || productName == ''} type='button' onClick={handleAdd} className="bg-white transition-colors flex items-center justify-center ease-in-out w-full py-1.5 px-2 border text-black font-medium text-xs rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black disabled:cursor-default">
-                                    Adicionar Variantes
+                            <div className="flex gap-y-6  justify-end">
+                                <button type='submit' className="bg-white sm:max-w-[200px] mt-1 sm:mt-0 transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full p-2 border text-black font-medium text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
+                                    {loading
+                                        ?
+                                        <PingLoading />
+                                        :
+                                        <span>
+                                            Editar Produto
+                                        </span>
+                                    }
                                 </button>
                             </div>
                         </div>
-                        <div className="w-full h-full overflow-auto">
-                            <DataTable columns={columns} data={variations} onEdit={handleEdit} onRemove={handleRemove} />
-                        </div>
                     </div>
-                    <div className="flex gap-y-6  justify-end">
-                        <button type='submit' className="bg-white sm:max-w-[200px] mt-1 sm:mt-0 transition-colors items-center flex justify-center gap-x-2 ease-in-out w-full p-2 border text-black font-medium text-sm rounded-md hover:bg-transparent hover:border hover:border-gray-300 hover:text-white disabled:bg-neutral-500 disabled:border-0 disabled:hover:text-black">
-                            {loading
-                                ?
-                                <PingLoading />
-                                :
-                                <span>
-                                    Criar Produto
-                                </span>
-                            }
-                        </button>
-                    </div>
-                </div>
-            </div>
+            }
         </form>
     )
 }

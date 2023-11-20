@@ -24,3 +24,21 @@ export function amountOrder(products: ProductsInvoice[]) {
 
     return total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
+
+export function convertDateFormat(originalValue: string): string {
+
+    if (originalValue == null) return ''
+
+    var dateTime = new Date(originalValue);
+
+    var year = dateTime.getFullYear();
+    var month = dateTime.toLocaleString('default', { month: 'short' }).charAt(0).toUpperCase() +
+        dateTime.toLocaleString('default', { month: 'short' }).slice(1);
+    var day = dateTime.getDate();
+    var hours = dateTime.getHours();
+    var minutes = dateTime.getMinutes();
+
+    var newFormat = `${month} ${day}, ${year} ás ${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+    return newFormat;
+}

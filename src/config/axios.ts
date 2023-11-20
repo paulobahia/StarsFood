@@ -2,10 +2,14 @@ import axios, { AxiosInstance } from 'axios';
 import Cookies from 'js-cookie';
 import { jwtDecode } from "jwt-decode";
 
-type JWT = {
+type JWTServe = {
     email: string,
     role: string,
     restaurantId: string
+}
+
+type JWTHttp = {
+    sub: string
 }
 
 const server = axios.create({
@@ -18,20 +22,25 @@ const http = axios.create({
     withCredentials: true,
 });
 
-const cookies = Cookies.get('TokenServer');
+const cookiesServe = Cookies.get('TokenServer');
+const cookiesHttp = Cookies.get('JwtToken')
 
-if (cookies) {
-    const { restaurantId }: JWT = jwtDecode(cookies);
+if (cookiesServe) {
+    const { restaurantId }: JWTServe = jwtDecode(cookiesServe);
 
-    http.defaults.headers['X-RestaurantId'] = restaurantId
     server.defaults.headers['RestaurantId'] = restaurantId
+}
+
+if (cookiesHttp) {
+    const { sub }: JWTHttp = jwtDecode(cookiesHttp);
+    http.defaults.headers['X-RestaurantId'] = 1
 }
 
 server.interceptors.request.use(
     (config) => {
 
-        if (cookies) {
-            config.headers.Authorization = `Bearer ${cookies}`;
+        if (cookiesServe) {
+            config.headers.Authorization = `Bearer ${cookiesServe}`;
         }
 
         return config;
@@ -41,11 +50,11 @@ server.interceptors.request.use(
     }
 );
 
-server.interceptors.request.use(
+http.interceptors.request.use(
     (config) => {
 
-        if (cookies) {
-            const { restaurantId }: JWT = jwtDecode(cookies);
+        if (cookiesHttp) {
+            config.headers.Authorization = `Bearer ${cookiesHttp}`;
         }
 
         return config;

@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
 export const CategorySchema = z.object({
-    Id: z.number(),
-    CategoryName: z.string(),
+    id: z.number(),
+    categoryName: z.string(),
     ImgUrl: z.string().nullable(),
     CreatedTime: z.date(),
     UpdateTime: z.date().nullable(),
     RestaurantId: z.number(),
-    IsAvailable: z.boolean(),
+    isAvailable: z.boolean(),
 });
 
 export type Category = z.infer<typeof CategorySchema>;
@@ -19,7 +19,6 @@ export const CreateCategorySchema = z.object({
 export type CreateCategory = z.infer<typeof CreateCategorySchema>
 
 export const UpdateCategorySchema = z.object({
-    id: z.number(),
     categoryName: z.string(),
     isAvailable: z.boolean(),
 });

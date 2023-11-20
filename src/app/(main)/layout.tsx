@@ -18,6 +18,9 @@ import {
 import { NavigationMenuOrder as NavigationOrder } from "./components/NavigationMenuOrder";
 import { NavigationMenuProducts as NavigationProduct } from "./components/NavigationMenuProducts";
 
+import UserNav from "./components/UserNav";
+import Search from "./components/Search";
+
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
     const pathSplited = pathname.split('/')[1]
@@ -26,25 +29,31 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         <main>
             <Sheet>
                 <nav className="border-b p-2 px-5 sm:px-10 text-white flex items-center border-primary-light">
-                    <div className="flex items-center justify-between gap-x-16">
-                        <SheetTrigger className="flex sm:hidden">
-                            <Image src={logo} alt="Logo" className="w-8" />
-                        </SheetTrigger>
-                        <Image src={logo} alt="Logo" className="w-8 hidden sm:flex" />
-                        <NavigationMenu className="gap-x-6 hidden sm:flex font-medium w-full text-sm">
-                            <p className={pathSplited == 'overview' ? 'text-white' : 'text-primary-light'}>
-                                <Link className="cursor-pointer" href={"/overview"}>
-                                    Overview
-                                </Link>
-                            </p>
-                            <NavigationOrder />
-                            <NavigationProduct/>
-                            <p className={pathSplited == 'settings' ? 'text-white' : 'text-primary-light'}>
-                                <Link className="cursor-pointer" href={"/settings"}>
-                                    Configurações
-                                </Link>
-                            </p>
-                        </NavigationMenu>
+                    <div className="flex w-full items-center justify-between">
+                        <div className="flex items-center gap-x-8">
+                            <SheetTrigger className="flex sm:hidden">
+                                <Image src={logo} alt="Logo" className="w-8" />
+                            </SheetTrigger>
+                            <Image src={logo} alt="Logo" className="w-8 hidden sm:flex" />
+                            <NavigationMenu className="gap-x-6 hidden sm:flex font-medium w-full text-sm">
+                                <p className={pathSplited == 'overview' ? 'text-white' : 'text-primary-light'}>
+                                    <Link className="cursor-pointer" href={"/overview"}>
+                                        Overview
+                                    </Link>
+                                </p>
+                                <NavigationOrder />
+                                <NavigationProduct />
+                                <p className={pathSplited == 'settings' ? 'text-white' : 'text-primary-light'}>
+                                    <Link className="cursor-pointer" href={"/settings"}>
+                                        Configurações
+                                    </Link>
+                                </p>
+                            </NavigationMenu>
+                        </div>
+                        <div className="ml-auto flex items-center space-x-4">
+                            <Search />
+                            <UserNav />
+                        </div>
                     </div>
                 </nav>
                 <SheetComponent />

@@ -14,7 +14,7 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     title?: string
     options: {
         label: string
-        value: string
+        value: boolean
         icon?: React.ComponentType<{ className?: string }>
     }[]
 }
@@ -25,7 +25,7 @@ export function DataTableFacetedFilter<TData, TValue>({
     options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
     const facets = column?.getFacetedUniqueValues()
-    const selectedValues = new Set(column?.getFilterValue() as string[])
+    const selectedValues = new Set(column?.getFilterValue() as boolean[])
 
     return (
         <Popover>
@@ -53,10 +53,10 @@ export function DataTableFacetedFilter<TData, TValue>({
                                 ) : (
                                     options
                                         .filter((option) => selectedValues.has(option.value))
-                                        .map((option) => (
+                                        .map((option, index) => (
                                             <Badge
                                                 variant="secondary"
-                                                key={option.value}
+                                                key={index}
                                                 className="rounded-sm px-1 min-w-max font-normal"
                                             >
                                                 {option.label}
@@ -74,11 +74,11 @@ export function DataTableFacetedFilter<TData, TValue>({
                     <CommandList>
                         <CommandEmpty>Sem resultados</CommandEmpty>
                         <CommandGroup>
-                            {options.map((option) => {
+                            {options.map((option, index) => {
                                 const isSelected = selectedValues.has(option.value)
                                 return (
                                     <CommandItem
-                                        key={option.value}
+                                        key={index}
                                         onSelect={() => {
                                             if (isSelected) {
                                                 selectedValues.delete(option.value)

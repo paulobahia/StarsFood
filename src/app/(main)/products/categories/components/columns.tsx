@@ -12,7 +12,7 @@ import { DataTableRowActions } from "./data-table-row-actions"
 export type Categories = {
   id: string
   categoryName: string
-  isAvailable: string
+  isAvailable: boolean
 }
 
 export const columns: ColumnDef<Categories>[] = [

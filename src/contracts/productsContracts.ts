@@ -16,11 +16,32 @@ export const ProductSchema = z.object({
 
 export type Product = z.infer<typeof ProductSchema>;
 
-export const CreateProductSchema = z.object({
+export const CreateProductCommandSchema = z.object({
     name: z.string(),
     description: z.string(),
     categoryId: z.number(),
     imgUrl: z.string().nullable(),
 });
 
+export const CreateVariationCommandSchema = z.object({
+    description: z.string(),
+    value: z.number(),
+});
+
+export const CreateProductSchema = z.object({
+    createProductCommand: CreateProductCommandSchema,
+    createVariationCommandList: z.array(CreateVariationCommandSchema),
+});
+
 export type CreateProduct = z.infer<typeof CreateProductSchema>
+
+export const UpdateProductSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    description: z.string(),
+    imgUrl: z.string().nullable(),
+    categoryId: z.number(),
+    isAvailable: z.boolean(),
+});
+
+export type UpdateProduct = z.infer<typeof UpdateProductSchema>

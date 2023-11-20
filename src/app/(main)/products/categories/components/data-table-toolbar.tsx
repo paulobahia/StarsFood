@@ -13,12 +13,12 @@ import { Circle, Plus, CircleOff } from "lucide-react"
 
 export const statuses = [
     {
-        value: "active",
+        value: true,
         label: "Ativo",
         icon: Circle,
     },
     {
-        value: "inactive",
+        value: false,
         label: "Inativo",
         icon: CircleOff,
     },
@@ -35,9 +35,9 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
             <div className="w-full max-w-[220px] sm:max-w-[250px] flex items-center gap-x-2">
                 <Input
                     placeholder="Pesquise por categoria"
-                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                    value={(table.getColumn("categoryName")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("name")?.setFilterValue(event.target.value)
+                        table.getColumn("categoryName")?.setFilterValue(event.target.value)
                     }
                     className="h-8 w-[150px] lg:w-[250px] placeholder:text-primary-secundary placeholder:text-xs text-sm rounded-md text-white"
                 />
