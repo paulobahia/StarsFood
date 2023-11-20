@@ -1,6 +1,6 @@
 "use client"
 
-import { Login } from '@/services'
+import { Login, LoginHttp } from '@/services'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Eye, EyeSlash } from 'iconsax-react'
@@ -8,10 +8,20 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { z } from 'zod'
 import Link from 'next/link'
+import Cookies from 'js-cookie';
+import { jwtDecode } from "jwt-decode";
+import localForage from "localforage";
 
 import { Notify } from '@/context/NotifyContext'
 import { authUserFormSchema } from '@/schemas/auth/loginFormSchema'
 import PingLoading from '../ui/pingLoading'
+
+type JWTServe = {
+    email: string,
+    name: string,
+    role: string,
+    restaurantId: string
+}
 
 const LoginForm = () => {
     type AuthUserFormData = z.infer<typeof authUserFormSchema>
@@ -33,6 +43,33 @@ const LoginForm = () => {
         })
     }
 
+    const generateHttpToken = () => {
+        LoginHttp()
+            .then(() => {
+                const cookiesServe = Cookies.get('TokenServer');
+                if (cookiesServe) {
+                    const { name, email, role }: JWTServe = jwtDecode(cookiesServe);
+                    const infoUser = {
+                        name,
+                        email,
+                        role
+                    }
+                    localForage.setItem('infoUser', infoUser)
+                        .then(() => {
+                            router.push('/overview')
+                        })
+                        .catch((e) => {
+                            setLoading(false)
+                            console.log(e)
+                        })
+                }
+            })
+            .catch((e) => {
+                setLoading(false)
+                console.log(e)
+            })
+    }
+
     const authUser: SubmitHandler<AuthUserFormData> = ({ email, password }) => {
         setLoading(true)
         let postData = {
@@ -40,8 +77,8 @@ const LoginForm = () => {
             password
         }
         Login(postData)
-            .then((response) => {
-                router.push('/overview')
+            .then(() => {
+                generateHttpToken()
             })
             .catch((e) => {
                 var errorMessage: string = ''
